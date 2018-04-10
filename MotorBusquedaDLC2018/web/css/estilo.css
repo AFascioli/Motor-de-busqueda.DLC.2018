@@ -12,8 +12,19 @@ header, footer{
     bottom: 0;
 }
 
+table, th, td {
+    float: none;
+    border:2px solid black;
+    border-collapse: collapse;
+/*    width: 100%; */
+}
+
+table {width: 100%;}
+
+td { text-align: center}
 footer{
-    position: absolute;
+/*    position: absolute;*/
+    bottom: 0px;
     width: auto;
 }
 
