@@ -6,6 +6,8 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,18 +31,31 @@ public class ServletMotor extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        String dest = "";
+        try {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServletMotor</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet nuestro</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            //----------------------------------------
+            //Alumno alumno = SAC.getAlumno(id);
+            //----------------------------------------
+//            db = SAC.getSingleDB();
+//            Alumno alumno = DBAlumno.loadDB(db, id);
+            //----------------------------------------
+            //db = SAC.getPoolDB();
+            //Alumno alumno = DBAlumno.loadDB(db, id);
+            //----------------------------------------
+            
+            Resultado res = new Resultado("Este es el resultado");
+            
+            request.setAttribute("resultado", res);
+                dest = "/index.html";
         }
+        catch (Exception e) {
+//                errorMsg = new ErrorMsg(errorTitle, e.getMessage());
+//            request.setAttribute("errorMsg", errorMsg);
+        }
+        ServletContext app = this.getServletContext();
+        RequestDispatcher disp = app.getRequestDispatcher(dest);
+        disp.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

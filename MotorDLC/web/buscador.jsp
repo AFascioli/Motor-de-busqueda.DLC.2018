@@ -1,3 +1,9 @@
+<%-- 
+    Document   : Resultado
+    Created on : Apr 24, 2018, 10:14:20 AM
+    Author     : dlcusr
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -18,7 +24,7 @@ and open the template in the editor.
             </header>
            
             <div id="cuerpo">
-                <form method="post" action="https://localhost:8080/motordlc/servletmotor">
+                <form method="post" action="servletmotor.java">
                     <label id="campobusqueda">
                         Ingrese texto de b&uacute;squeda: &nbsp;
                     </label>
@@ -29,31 +35,7 @@ and open the template in the editor.
             </div>
 
             <div id="tablaResultado"> 
-                <table>
-                    <tr>
-                        <th>
-                            Documento
-                        </th>
-                        <th> Cantidad de veces que aparecio</th>
-                        <th> Cantidad total </th>
-                        <th>Promedio</th>
-
-                    </tr>
-                    
-                    <tr> <td> Margarita </td>
-                        <td>20</td>
-                        <td>150</td>
-                        <td>0,1333</td>
-                    </tr>
-                    
-                    
-                    <tr> <td> Dieguito</td>
-                        <td>74</td>
-                        <td>1000</td>
-                        <td>0,074</td>
-                    </tr>
-
-                </table>
+               ${resultado.res}
             </div>
             <footer>
                 Dise&nacute;o de Lenguajes de Consulta, 2018
@@ -62,3 +44,4 @@ and open the template in the editor.
         </div>
     </body>
 </html>
+
