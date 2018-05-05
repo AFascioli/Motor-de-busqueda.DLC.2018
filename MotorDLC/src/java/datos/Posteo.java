@@ -63,12 +63,23 @@ public class Posteo {
     public NodoDocumento getNodo(String id_docp)
     {        
         for (int i = 0; i < this.lista.size(); i++) {
-     if (this.lista.get(i).getId_documento() == null ? id_docp == null : this.lista.get(i).getId_documento().equals(id_docp))
+        if (this.lista.get(i).getId_documento() == null ? id_docp == null : this.lista.get(i).getId_documento().equals(id_docp))
         {
             return  this.lista.get(i);
         }
         }
      return null;
+    }
+    
+    public int getNodoIndex(String id_docp) //Devuelve el index dado el nombre del documento, si no esta devuelve -1
+    {        
+        for (int i = 0; i < this.lista.size(); i++) {
+        if (this.lista.get(i).getId_documento() == null ? id_docp == null : this.lista.get(i).getId_documento().equals(id_docp))
+        {
+            return  i;
+        }
+        }
+     return -1;
     }
     
     public NodoDocumento getNodo(int posicion)
@@ -80,5 +91,8 @@ public class Posteo {
     {
     Collections.sort(this.lista);
     }
+    
+    
+    
     
 }

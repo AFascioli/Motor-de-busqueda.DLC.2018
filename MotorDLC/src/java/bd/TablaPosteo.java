@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,20 +23,18 @@ public class TablaPosteo {
     
     
     private String ruta;
-    private Map termino;
 
-    public TablaPosteo(String ruta, Map termino) {
+    public TablaPosteo(String ruta) {
         this.ruta = ruta;
-        this.termino = termino;
     }
     
-    public void insertarHM() throws ClassNotFoundException, SQLException //Toma el hashmap y mete en la base de datos el posteo
+    public void insertarHM(Map termino) throws ClassNotFoundException, SQLException //Toma el hashmap y mete en la base de datos el posteo
     {
         ConexionBD conn=new ConexionBD(ruta);
         Connection c=conn.conectar();
         Statement stm=c.createStatement();
         c.setAutoCommit(false);
-        for (Object t:this.termino.values()) { //Recorre el hash de terminos
+        for (Object t:termino.values()) { //Recorre el hash de terminos
             
             Termino term=(Termino) t;
             
@@ -51,14 +51,15 @@ public class TablaPosteo {
         c.close();        
     }
     
-    public Map obtenerTabla(String terminoBuscado) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
+    public ArrayList obtenerTabla(String terminoBuscado) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
         //Recupera de la base de datos un mapa con todos los elementos.
-        Map posteoHM = new LinkedHashMap();
+        ArrayList <FilaPosteo>array= new ArrayList<>();
         try {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();
             Statement stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO='"+terminoBuscado+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '"+terminoBuscado+"'");
+            
             
             FilaPosteo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
 
@@ -67,15 +68,19 @@ public class TablaPosteo {
                 aux.setId_termino(rs.getString("ID_TERMINO"));
                 aux.setDocumento(rs.getString("ID_DOCUMENTO"));
                 aux.setFrecuencia(rs.getInt("FRECUENCIA"));
-                posteoHM.put(aux.getId_termino()+aux.getDocumento(),aux);
+                array.add(aux);
+                
             }
 
             rs.close();
             stmt.close();
             c.close();
+            
+            Collections.sort(array);
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return posteoHM;
+        return array;
     }
 }

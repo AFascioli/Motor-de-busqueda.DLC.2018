@@ -42,7 +42,9 @@ public class ArchivoToHM {
         
         try {       
                 for(Object o:this.file){
+                    
                     System.out.println("Cambio de documento");
+                    
                 File fa = (File)o; //Lectura del archivo
                 FileReader fr= new FileReader(fa);
                 BufferedReader br= new BufferedReader(fr);
@@ -79,29 +81,41 @@ public class ArchivoToHM {
                         {
                             Termino existente= (Termino)terminoHM.get(palabra);
                             terminoHM.remove(palabra); //Se saca la palabra del hashmap para aumentarle la frecuencia y volverla a ingresar.
+                            NodoDocumento auxxx = new NodoDocumento (fa.getName(),1);
                             
+                            if (existente.getPosteo().getNodoIndex(fa.getName())==-1) { //pregunta si esta el documento, si esta entra al else y se le aumenta la frecuencia, sino va al if
+                                existente.getPosteo().getLista().add(auxxx);
+                                existente.getPosteo().ordenarLista();
+                            }
+                            else
+                            {
+                                existente.getPosteo().getLista().get(existente.getPosteo().getNodoIndex(fa.getName())).aumentarFrecuencia();
+                                
+                            }
                             //recorremos el arraylist de documentos y nos fijamos si el termino encontrado ya fue encontrado en ese documento y se le aumenta la frecuencia, 
                             //sino se agrega un nuevo nodo
-                            for (int i = 0; i < existente.getPosteo().getLista().size(); i++) {   
-                             
-                                if (fa.getName().compareToIgnoreCase(existente.getPosteo().getLista().get(i).getId_documento())==0) { //entra en este if si ya aparecio el termino en el mismo documento
-                                    existente.getPosteo().getLista().get(i).aumentarFrecuencia();
-                                    
-//                                    System.out.println("Aumento frecuencia");
-                                    
-                                    existente.getPosteo().ordenarLista();   //ordenamos la lista de documentos por frecuencia maxima (PUEDE QUE SEA INECESARIO, CUANDO SE METE EN LA BD EL HM NO INFLUYE EL ORDEN, CUANDO LO SACAMOS DE LA BD USAMOS EL ORDER BY)
-                                    existente.setFrecuenciaMax(existente.getPosteo().getLista().get(0).getFrecuencia()); //actualizamos la frecuencia maxima del termino
-                                    
-                                }
-                                else{       //Si la palabra encontrada ya esta en vocabulario pero es un documento nuevo
-                                    NodoDocumento nuevoDoc = new NodoDocumento (fa.getName(),1);
-                                    existente.getPosteo().getLista().add(nuevoDoc);
-                                    existente.getPosteo().ordenarLista(); //ordenamos la lista de documentos por frecuencia maxima
-                                    //No actualizamos la frecuencia maxima del termino porque deberia ser 1 o mas y si se mete un nuevo documento no cambia la frecuencia maxima
-                                    
-//                                    System.out.println("Nuevo documento");
-                                }
-                            }
+                            
+//                            for (int i = 0; i < existente.getPosteo().getLista().size(); i++) {   
+//                             
+//                                if (fa.getName().compareToIgnoreCase(existente.getPosteo().getLista().get(i).getId_documento())==0) { //entra en este if si ya aparecio el termino en el mismo documento
+//                                    existente.getPosteo().getLista().get(i).aumentarFrecuencia();
+//                                    
+////                                    System.out.println("Aumento frecuencia");
+//                                    
+//                                    existente.getPosteo().ordenarLista();   //ordenamos la lista de documentos por frecuencia maxima (PUEDE QUE SEA INECESARIO, CUANDO SE METE EN LA BD EL HM NO INFLUYE EL ORDEN, CUANDO LO SACAMOS DE LA BD USAMOS EL ORDER BY)
+//                                    existente.setFrecuenciaMax(existente.getPosteo().getLista().get(0).getFrecuencia()); //actualizamos la frecuencia maxima del termino
+//                                    
+//                                }
+//                                else{       //Si la palabra encontrada ya esta en vocabulario pero es un documento nuevo
+//                                    NodoDocumento nuevoDoc = new NodoDocumento (fa.getName(),1);
+//                                    existente.getPosteo().getLista().add(nuevoDoc);
+//                                    existente.getPosteo().ordenarLista(); //ordenamos la lista de documentos por frecuencia maxima
+//                                    //No actualizamos la frecuencia maxima del termino porque deberia ser 1 o mas y si se mete un nuevo documento no cambia la frecuencia maxima
+//                                    
+////                                    System.out.println("Nuevo documento");
+//                                }
+//                            }
+
                             terminoHM.put(existente.getId_termino(), existente); //Se vuelve a agregar el termino al hash map
                                            
                         }
