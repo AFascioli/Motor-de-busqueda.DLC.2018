@@ -87,7 +87,7 @@ public class ArchivoToHM {
                                     existente.getPosteo().getLista().get(i).aumentarFrecuencia();
                                     
                                     existente.getPosteo().ordenarLista();   //ordenamos la lista de documentos por frecuencia maxima
-                                    existente.setFrecuenciaMax(existente.getPosteo().getLista().get(0).getFrecuencia());//actualizamos la frecuencia maxima del termino
+                                    existente.setFrecuenciaMax(existente.getPosteo().getLista().get(0).getFrecuencia()); //actualizamos la frecuencia maxima del termino
                                     
                                 }
                                 else{       //Si la palabra encontrada ya esta en vocabulario pero es un documento nuevo
