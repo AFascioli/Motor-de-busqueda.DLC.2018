@@ -16,9 +16,9 @@ public class ConexionBD {
     public Connection conectar() throws ClassNotFoundException, SQLException 
     {        
         Connection conexion;
-        Class.forName("org.sqlite.JDBC");
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
         
-        conexion= DriverManager.getConnection("jdbc:sqlite:"+ruta);
+        conexion= DriverManager.getConnection("jdbc:derby:"+ruta);
         
         return conexion;
     }        

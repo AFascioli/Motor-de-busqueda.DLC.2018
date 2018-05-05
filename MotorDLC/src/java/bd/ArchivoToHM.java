@@ -16,12 +16,12 @@ import javax.swing.JTable;
 public class ArchivoToHM {
 
     private File file[];
-    private JTable tabla;
+//    private JTable tabla;
     private String ruta;
     
-    public ArchivoToHM(File file[],JTable tabla, String ruta) {
+    public ArchivoToHM(File file[], String ruta) {
         this.file=file;
-        this.tabla=tabla;
+//        this.tabla=tabla;
         this.ruta=ruta;
     }
    
@@ -42,6 +42,7 @@ public class ArchivoToHM {
         
         try {       
                 for(Object o:this.file){
+                    System.out.println("Cambio de documento");
                 File fa = (File)o; //Lectura del archivo
                 FileReader fr= new FileReader(fa);
                 BufferedReader br= new BufferedReader(fr);
@@ -55,7 +56,7 @@ public class ArchivoToHM {
                 s=removeAcentos(s);
                 s=s.toUpperCase();
 
-                tokenizer = new StringTokenizer(s,comilla + " $/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}`´&|%°<>~©ª¬'±");
+                tokenizer = new StringTokenizer(s,comilla + " $/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}`´&|%°<>~©ª¬'±+");
 
                 while (tokenizer.hasMoreTokens())
                     {
@@ -81,12 +82,14 @@ public class ArchivoToHM {
                             
                             //recorremos el arraylist de documentos y nos fijamos si el termino encontrado ya fue encontrado en ese documento y se le aumenta la frecuencia, 
                             //sino se agrega un nuevo nodo
-                            for (int i = 0; i < existente.getPosteo().getLista().size()-1; i++) {   
+                            for (int i = 0; i < existente.getPosteo().getLista().size(); i++) {   
                              
                                 if (fa.getName().compareToIgnoreCase(existente.getPosteo().getLista().get(i).getId_documento())==0) { //entra en este if si ya aparecio el termino en el mismo documento
                                     existente.getPosteo().getLista().get(i).aumentarFrecuencia();
                                     
-                                    existente.getPosteo().ordenarLista();   //ordenamos la lista de documentos por frecuencia maxima
+//                                    System.out.println("Aumento frecuencia");
+                                    
+                                    existente.getPosteo().ordenarLista();   //ordenamos la lista de documentos por frecuencia maxima (PUEDE QUE SEA INECESARIO, CUANDO SE METE EN LA BD EL HM NO INFLUYE EL ORDEN, CUANDO LO SACAMOS DE LA BD USAMOS EL ORDER BY)
                                     existente.setFrecuenciaMax(existente.getPosteo().getLista().get(0).getFrecuencia()); //actualizamos la frecuencia maxima del termino
                                     
                                 }
@@ -95,6 +98,8 @@ public class ArchivoToHM {
                                     existente.getPosteo().getLista().add(nuevoDoc);
                                     existente.getPosteo().ordenarLista(); //ordenamos la lista de documentos por frecuencia maxima
                                     //No actualizamos la frecuencia maxima del termino porque deberia ser 1 o mas y si se mete un nuevo documento no cambia la frecuencia maxima
+                                    
+//                                    System.out.println("Nuevo documento");
                                 }
                             }
                             terminoHM.put(existente.getId_termino(), existente); //Se vuelve a agregar el termino al hash map

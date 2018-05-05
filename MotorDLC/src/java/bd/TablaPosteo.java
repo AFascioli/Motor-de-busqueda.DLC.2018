@@ -22,6 +22,11 @@ public class TablaPosteo {
     
     private String ruta;
     private Map termino;
+
+    public TablaPosteo(String ruta, Map termino) {
+        this.ruta = ruta;
+        this.termino = termino;
+    }
     
     public void insertarHM() throws ClassNotFoundException, SQLException //Toma el hashmap y mete en la base de datos el posteo
     {
@@ -33,10 +38,11 @@ public class TablaPosteo {
             
             Termino term=(Termino) t;
             
-            for (int i = 0; i < term.getPosteo().getLista().size()-1; i++) { //Recorre la lista de posteo de cada termino
+            for (int i = 0; i < term.getPosteo().getLista().size(); i++) { //Recorre la lista de posteo de cada termino
                 
-                stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES ("+term.getPosteo().getId_termino()+", "+term.getPosteo().getLista().get(i).getId_documento()
-                                    +", "+term.getPosteo().getLista().get(i).getFrecuencia()+");");
+                stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES ('"+term.getPosteo().getId_termino()+"', '"+term.getPosteo().getLista().get(i).getId_documento()
+                                    +"', "+term.getPosteo().getLista().get(i).getFrecuencia()+")");
+                
             }
             
         }
