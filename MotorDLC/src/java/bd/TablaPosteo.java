@@ -72,7 +72,6 @@ public class TablaPosteo {
                 aux.setDocumento(rs.getString("ID_DOCUMENTO"));
                 aux.setFrecuencia(rs.getInt("FRECUENCIA"));
                 array.add(aux);
-
             }
 
             rs.close();

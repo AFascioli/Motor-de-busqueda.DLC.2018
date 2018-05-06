@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import javax.swing.JTable;
 
 public class ArchivoToHM {
 
@@ -35,6 +34,7 @@ public class ArchivoToHM {
     public Map fileToHM()
     {   //Genera un mapa con todas las palabras de un archivo seleccionado.
         Map terminoHM =new LinkedHashMap();
+        
         
         try {       
                 for(Object o:this.file){
@@ -67,6 +67,7 @@ public class ArchivoToHM {
                             nodoDocs.add(nodoDoc);
                             
                             Posteo posteo=new Posteo (palabra,nodoDocs); //creamos el posteo y le mandas el arraylist
+                           
                             
                             Termino term = new Termino(palabra,1,1,posteo); //con todo lo anterior creado podemos crear el termino
                             

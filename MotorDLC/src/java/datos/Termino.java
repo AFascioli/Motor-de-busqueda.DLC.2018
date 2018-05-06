@@ -11,6 +11,7 @@ package datos;
  * @author dlcusr
  */
 public class Termino {
+    
     private String id_termino;
     private int frecuenciaMax;
     private int cantDocumentos;
