@@ -16,13 +16,9 @@ import javax.swing.JTable;
 public class ArchivoToHM {
 
     private File file[];
-//    private JTable tabla;
-    private String ruta;
     
-    public ArchivoToHM(File file[], String ruta) {
+    public ArchivoToHM(File file[]) {
         this.file=file;
-//        this.tabla=tabla;
-        this.ruta=ruta;
     }
    
     public String removeAcentos(String str) {
@@ -135,17 +131,6 @@ public class ArchivoToHM {
         }
     }
     
-    public Map obtenerHashPosteoDesdeBD() throws ClassNotFoundException 
-    {   
-        //Reemplazar tablaPalabra por la clase que utilicemos para guardar el vocabulario en la BD.
-       
-        Map v=null;  //PROVISORIO!!!!!!!!!!!!!!!!!!!
-//        TablaPalabra tp = new TablaPalabra(ruta);
-//            
-//        v = tp.obtenerTabla();
-
-        return v; 
-    }
-    
+        
     
 }

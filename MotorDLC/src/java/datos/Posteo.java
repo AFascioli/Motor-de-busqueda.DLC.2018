@@ -77,6 +77,7 @@ public class Posteo {
         if (this.lista.get(i).getId_documento() == null ? id_docp == null : this.lista.get(i).getId_documento().equals(id_docp))
         {
             return  i;
+            
         }
         }
      return -1;
