@@ -40,7 +40,7 @@ public class Main {
 //        f[9]=new File("1hofh10.txt");
 
         ArchivoToHM arcToHM = new ArchivoToHM(f);
-        Map aux = arcToHM.fileToHM();
+        Map aux[] = arcToHM.fileToHM();
         
 //        System.out.println(aux.size()); //Tamaño del hm
 //        Termino term = (Termino) aux.get("GUTENBERG");
@@ -51,8 +51,10 @@ public class Main {
 //        System.out.println("Frecuencia maxima de WE: "+fp.getFrecuencia());
         
         try {
-            tp.deleteTable();
-            tp.insertarHM(aux);
+//            tp.deleteTable();
+            System.out.println("TerminoHM size: "+aux[0].size());
+            tp.insertarTerminoHM(aux[0]);
+            tp.insertarPosteoHM(aux[1]);
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

@@ -15,26 +15,17 @@ public class Termino {
     private String id_termino;
     private int frecuenciaMax;
     private int cantDocumentos;
-    private Posteo posteo;
 
-    public Termino(String id_termino, int frecuenciaMax, int cantDocumentos, Posteo posteo) {
+    public Termino(String id_termino, int frecuenciaMax, int cantDocumentos) {
         this.id_termino = id_termino;
         this.frecuenciaMax = frecuenciaMax;
         this.cantDocumentos = cantDocumentos;
-        this.posteo = posteo;
     }
 
     public Termino() {
     }
 
-    public Posteo getPosteo() {
-        return posteo;
-    }
-
-    public void setPosteo(Posteo posteo) {
-        this.posteo = posteo;
-    }
-        
+            
     public String getId_termino() {
         return id_termino;
     }
@@ -58,11 +49,5 @@ public class Termino {
     public void setCantDocumentos(int cantDocumentos) {
         this.cantDocumentos = cantDocumentos;
     }
-    //Corregir
-    //Seguramente vamos a buscar el posteo del termino preguntar el tamaño y actualizar
-    public void actualizarCantidadDoc()
-    {
-        this.cantDocumentos = this.posteo.getLista().size();
-    }
-    
+        
 }

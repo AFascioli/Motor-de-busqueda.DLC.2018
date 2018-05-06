@@ -9,8 +9,8 @@ package bd;
  *
  * @author dlcusr
  */
-public class FilaPosteo implements Comparable{
-    
+public class FilaPosteo implements Comparable {
+
     private String id_termino;
     private String documento;
     private int frecuencia;
@@ -50,18 +50,23 @@ public class FilaPosteo implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-        
-        FilaPosteo fp=(FilaPosteo) o;
-       
-        if(this.frecuencia > fp.getFrecuencia()) 
-        {
+
+        FilaPosteo fp = (FilaPosteo) o;
+
+        if (this.frecuencia > fp.getFrecuencia()) {
             return 1;
-        }
-        else
-        {
-            if(this.frecuencia == fp.getFrecuencia()){ return 0; }
-            else { return -1; }
+        } else {
+            if (this.frecuencia == fp.getFrecuencia()) {
+                return 0;
+            } else {
+                return -1;
+            }
         }
     }
-    
+
+    //============================NUEVA IMPLEMENTACION=================================
+    public void aumentarFrecuencia() {
+        this.frecuencia++;
+    }
+    //============================NUEVA IMPLEMENTACION=================================
 }

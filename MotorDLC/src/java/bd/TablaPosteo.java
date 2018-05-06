@@ -27,7 +27,7 @@ public class TablaPosteo {
         this.ruta = ruta;
     }
 
-    public void insertarHM(Map termino) throws ClassNotFoundException, SQLException //Toma el hashmap y mete en la base de datos el posteo
+    public void insertarTerminoHM(Map termino) throws ClassNotFoundException, SQLException //Toma el hashmap y mete en la base de datos el posteo
     {
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
@@ -39,17 +39,34 @@ public class TablaPosteo {
         for (Object t : termino.values()) { //Recorre el hash de terminos
 
             Termino term = (Termino) t;
-
-            for (int i = 0; i < term.getPosteo().getLista().size(); i++) { //Recorre la lista de posteo de cada termino
-
-                aux += " ('" + term.getPosteo().getId_termino() + "', '" + term.getPosteo().getLista().get(i).getId_documento()
-                        + "', " + term.getPosteo().getLista().get(i).getFrecuencia() + "),";
-
-            }
-
-            stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES" + aux.substring(0, aux.length() - 1));
-            aux = "";
+            aux+=" ( '"+term.getId_termino()+"', "+term.getFrecuenciaMax()+", "+term.getCantDocumentos()+"),";
+            
         }
+        System.out.println("aux length:"+aux.length());
+        stm.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
+        
+        stm.close();
+        c.commit();
+        c.close();
+    }
+    
+    public void insertarPosteoHM(Map posteo) throws ClassNotFoundException, SQLException //Toma el hashmap y mete en la base de datos el posteo
+    {
+        ConexionBD conn = new ConexionBD(ruta);
+        Connection c = conn.conectar();
+        Statement stm = c.createStatement();
+        c.setAutoCommit(false);
+
+        String aux = "";
+
+        for (Object t : posteo.values()) { //Recorre el hash de terminos
+
+            FilaPosteo fp = (FilaPosteo) t;
+            aux+=" ( '"+fp.getId_termino()+"', '"+fp.getDocumento()+"', "+fp.getFrecuencia()+"),";
+            
+        }
+        stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
+        
         stm.close();
         c.commit();
         c.close();
@@ -86,11 +103,11 @@ public class TablaPosteo {
         return array;
     }
 
-    public void deleteTable() throws ClassNotFoundException, SQLException {
+    public void deleteTable(String tabla) throws ClassNotFoundException, SQLException {
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
         Statement stmt = c.createStatement();
-        stmt.executeUpdate("delete from posteo");
+        stmt.executeUpdate("delete from "+tabla);
         c.commit();
         c.close();
     }
