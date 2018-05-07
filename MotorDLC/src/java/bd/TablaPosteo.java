@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -47,7 +45,7 @@ public class TablaPosteo {
             aux+=" ('"+term.getId_termino()+"', "+term.getFrecuenciaMax()+", "+term.getCantDocumentos()+"),";
             
             contador++;
-            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
+            if (contador==10) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux= c.createStatement();
                 stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
                 
@@ -84,7 +82,7 @@ public class TablaPosteo {
             aux+=" ( '"+fp.getId_termino()+"', '"+fp.getDocumento()+"', "+fp.getFrecuencia()+"),";
             
             contador++;
-            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
+            if (contador==10) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux= c.createStatement();
                 stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
                 
@@ -105,12 +103,7 @@ public class TablaPosteo {
     public ArrayList loadRankeo(Termino termino) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
         //Recupera de la base de datos un mapa con todos los elementos.
         ArrayList<FilaRankeo> array = new ArrayList<>();
-        
-//        int r=10, auxR=10;
-//        if (termino.getCantDocumentos()<r) {
-//            auxR=termino.getCantDocumentos();
-//        }
-        
+                
         try {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();

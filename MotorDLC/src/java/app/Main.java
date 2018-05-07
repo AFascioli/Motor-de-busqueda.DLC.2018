@@ -65,7 +65,7 @@ public class Main {
 //        System.out.println("Frecuencia maxima de WE: "+fp.getFrecuencia());
 
         try {
-            tp.deleteTable("VOCABULARIO");
+//            tp.deleteTable("VOCABULARIO");
 //            System.out.println("TerminoHM size: "+aux[0].size());
             tp.insertarTerminoHM(aux[0]);
             tp.insertarPosteoHM(aux[1]);
