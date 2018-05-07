@@ -10,7 +10,7 @@ package datos;
  *
  * @author dlcusr
  */
-public class Termino {
+public class Termino implements Comparable{
     
     private String id_termino;
     private int frecuenciaMax;
@@ -48,6 +48,24 @@ public class Termino {
 
     public void setCantDocumentos(int cantDocumentos) {
         this.cantDocumentos = cantDocumentos;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+       Termino aux=(Termino)o;
+        
+        if (this.cantDocumentos<aux.getCantDocumentos()) {
+            return -1;
+        }
+        else
+        {
+            if (this.cantDocumentos>aux.getCantDocumentos()) {
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
     }
         
 }

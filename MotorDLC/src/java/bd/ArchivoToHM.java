@@ -35,11 +35,11 @@ public class ArchivoToHM {
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
         Map resp[] = new LinkedHashMap[2];
-        
+//        int contador=0;
         try {
             for (Object o : this.file) {
-
-                System.out.println("Cambio de documento");
+//                contador++;
+//                System.out.println("Documento "+contador);
 
                 File fa = (File) o; //Lectura del archivo
                 FileReader fr = new FileReader(fa);

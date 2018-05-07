@@ -6,6 +6,8 @@
 package bd;
 
 import datos.Termino;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,18 +35,32 @@ public class TablaPosteo {
     {
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
-        Statement stm = c.createStatement();
+        Statement stm= c.createStatement();
         c.setAutoCommit(false);
-
+        
         String aux = "";
-
+        int contador=0;
+        
         for (Object t : termino.values()) { //Recorre el hash de terminos
 
             Termino term = (Termino) t;
-            aux+=" ( '"+term.getId_termino()+"', "+term.getFrecuenciaMax()+", "+term.getCantDocumentos()+"),";
+            aux+=" ('"+term.getId_termino()+"', "+term.getFrecuenciaMax()+", "+term.getCantDocumentos()+"),";
             
+            contador++;
+            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
+                Statement stmaux= c.createStatement();
+                stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
+                
+                stmaux.close();
+                c.commit();
+                
+                aux="";
+                contador=0;
+            }
         }
-        System.out.println("aux length:"+aux.length());
+        
+        System.out.println("aux length:"+aux.length());//Como el contador no llega siempre a 100, los datos que quedan en el aux se los mando a esta ultima executeUpdate
+        
         stm.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
         
         stm.close();
@@ -58,36 +76,46 @@ public class TablaPosteo {
         c.setAutoCommit(false);
 
         String aux = "";
-
+        int contador=0;
+        
         for (Object t : posteo.values()) { //Recorre el hash de terminos
 
             FilaPosteo fp = (FilaPosteo) t;
             aux+=" ( '"+fp.getId_termino()+"', '"+fp.getDocumento()+"', "+fp.getFrecuencia()+"),";
             
+            contador++;
+            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
+                Statement stmaux= c.createStatement();
+                stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
+                
+                stmaux.close();
+                c.commit();
+                
+                aux="";
+                contador=0;
+            }
         }
-        stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
         
+        stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
         stm.close();
         c.commit();
         c.close();
     }
 
-    public ArrayList obtenerTabla(String terminoBuscado) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
+    public ArrayList loadRankeo(String terminoBuscado) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
         //Recupera de la base de datos un mapa con todos los elementos.
-        ArrayList<FilaPosteo> array = new ArrayList<>();
+        ArrayList<FilaRankeo> array = new ArrayList<>();
         try {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();
             Statement stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + terminoBuscado + "'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + terminoBuscado + "' FETCH FIRST 10 ROWS ONLY");
 
-            FilaPosteo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
+            FilaRankeo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
 
             while (rs.next()) {
-                aux = new FilaPosteo();
-                aux.setId_termino(rs.getString("ID_TERMINO"));
-                aux.setDocumento(rs.getString("ID_DOCUMENTO"));
-                aux.setFrecuencia(rs.getInt("FRECUENCIA"));
+                aux = new FilaRankeo(rs.getString("ID_TERMINO"),rs.getString("ID_DOCUMENTO"),rs.getInt("FRECUENCIA"),0);
+                
                 array.add(aux);
             }
 
@@ -96,6 +124,7 @@ public class TablaPosteo {
             c.close();
 
             Collections.sort(array);
+            
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -110,5 +139,30 @@ public class TablaPosteo {
         stmt.executeUpdate("delete from "+tabla);
         c.commit();
         c.close();
+    }
+    
+    public Map loadVocabulario() throws ClassNotFoundException, SQLException
+    {
+        Map vocabulario=new LinkedHashMap();
+        
+        ConexionBD conn = new ConexionBD(ruta);
+            Connection c = conn.conectar();
+            Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM VOCABULARIO");
+
+            Termino aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
+
+            while (rs.next()) {
+                aux = new Termino();
+                aux.setId_termino(rs.getString("ID_TERMINO"));
+                aux.setFrecuenciaMax(rs.getInt("FRECUENCIAMAX"));
+                aux.setCantDocumentos(rs.getInt("CANTIDADDOCS"));
+                vocabulario.put(aux.getId_termino(), aux);
+            }
+
+            rs.close();
+            stmt.close();
+            c.close();
+            return vocabulario;
     }
 }
