@@ -35,24 +35,31 @@ public class ArchivoToHM {
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
         Map resp[] = new LinkedHashMap[2];
-//        int contador=0;
+        
+        String titulo="";
+        int contador=0;
         try {
             for (Object o : this.file) {
-//                contador++;
+                contador++;
 //                System.out.println("Documento "+contador);
-
+                
                 File fa = (File) o; //Lectura del archivo
                 FileReader fr = new FileReader(fa);
                 BufferedReader br = new BufferedReader(fr);
                 //Inicializacion
                 String s = br.readLine();
+                
+                if (contador<3){ //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
+                    titulo+=s;
+                }
+                
                 StringTokenizer tokenizer;
                 char comilla = '"';
 
                 while (s != null) {
                     s = removeAcentos(s);
                     s = s.toUpperCase();
-
+                    
                     tokenizer = new StringTokenizer(s, comilla + " $/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}`´&|%°<>~©ª¬'±+");
 
                     while (tokenizer.hasMoreTokens()) {
@@ -65,7 +72,7 @@ public class ArchivoToHM {
                             
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
-                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1);
+                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1,titulo);
                             posteoHM.put(palabra + fa.getName(), fp);
                             
                             //============================NUEVA IMPLEMENTACION=================================
@@ -90,7 +97,7 @@ public class ArchivoToHM {
                                     
                                 } else {    //Documento no esta en el hash de posteo
                                     
-                                    FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1);
+                                    FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1,titulo);
                                     posteoHM.put(palabra + fa.getName(), fp);
                                     
                                     Termino termAux=(Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino

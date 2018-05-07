@@ -14,10 +14,12 @@ import bd.TablaPosteo;
 import datos.Termino;
 import datos.Vocabulario;
 import java.io.File;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -30,11 +32,11 @@ import java.util.logging.Logger;
 public class Main {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
-        
+
         //========================test==============================
-        File dir= new File("./Documentos a leer");
-        File []archivos=dir.listFiles();
-        System.out.println("test: "+ archivos.length);
+        File dir = new File("./Documentos a leer");
+        File[] archivos = dir.listFiles();
+        System.out.println("Cantidad de documentos: " + archivos.length);
 //        
 //        File f[] = new File[3];
 //
@@ -52,87 +54,74 @@ public class Main {
 
         ArchivoToHM arcToHM = new ArchivoToHM(archivos);
         Map aux[] = arcToHM.fileToHM();
-        System.out.println("Tamaño hm: "+aux[0].size());
-        
+        System.out.println("Tamaño TerminoHM: " + aux[0].size());
+        System.out.println("Tamaño PosteoHM: " + aux[1].size());
+
 //        System.out.println(aux.size()); //Tamaño del hm
 //        Termino term = (Termino) aux.get("GUTENBERG");
 //        System.out.println("Frecuencia maxima: " + term.getId_termino()+", "+term.getPosteo().getLista().get(0).getFrecuencia());
-
         TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
 //        FilaPosteo fp=(FilaPosteo) tp.obtenerTabla("WE").get(0);
 //        System.out.println("Frecuencia maxima de WE: "+fp.getFrecuencia());
-        
+
         try {
-//            tp.deleteTable();
+            tp.deleteTable("VOCABULARIO");
 //            System.out.println("TerminoHM size: "+aux[0].size());
             tp.insertarTerminoHM(aux[0]);
-//            tp.insertarPosteoHM(aux[1]);
+            tp.insertarPosteoHM(aux[1]);
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
-    
-    public void rankeo() throws ClassNotFoundException{
-    
-        String consulta="all our book";
-        
-        TablaPosteo tp=new TablaPosteo("//localhost:1527/MotorDLC");
-        
-        Vocabulario voc=new Vocabulario();
-        
-        ArrayList terminosConsulta=voc.obtenerTerminosConsulta(consulta);
-        ArrayList documentosConsulta=new ArrayList();
-        
+
+    public void rankeo() throws ClassNotFoundException {
+
+        String consulta = "all our book";//Esto deberia ser un parametro, que es la consulta que hace el usuario
+
+        TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
+
+        Vocabulario voc = new Vocabulario();
+
+        ArrayList terminosConsulta = voc.obtenerTerminosConsulta(consulta);
+
+        Map hmDocs = new LinkedHashMap();
+
         for (Object o : terminosConsulta) {
-            
-            Termino term=(Termino)o;
-            ArrayList arrayfr= tp.loadRankeo(term.getId_termino()); //array filarankeo de cada termino
+
+            Termino term = (Termino) o;
+            ArrayList arrayFR = tp.loadRankeo(term); //array filarankeo de cada termino
             //)===================Test===============================
-            Map hmDocs=new LinkedHashMap();//HM para los documentos
-            
-            for (Object object : arrayfr) {
-                
-                FilaRankeo fr=(FilaRankeo)object;
-                Documento doc=new Documento();
-                
-                doc.setNombre(fr.getDocumento());
-                doc.setPeso(fr.getPeso()+fr.calcularPeso(arrayfr.size(), 500));
-                
-                if (hmDocs.containsKey(doc.getNombre())) {//Si el documento ya esta en el HM, lo saca y le suma el peso que se calculo antes
-                    double aux=(double) hmDocs.remove(doc.getNombre())+doc.getPeso();
-                    hmDocs.put(doc.getNombre(), aux);
+            //HM para los documentos
+
+            for (Object object : arrayFR) {
+
+                FilaRankeo fr = (FilaRankeo) object;
+                Documento docAInsertar = new Documento();
+
+                docAInsertar.setNombre(fr.getDocumento());
+                docAInsertar.setPeso(fr.calcularPeso(arrayFR.size(), 500));//500 es la cantidad total de documentos
+                docAInsertar.setTitulo(fr.getTitulo());
+
+                if (hmDocs.containsKey(docAInsertar.getNombre())) {//Si el documento ya esta en el HM, lo saca y le suma el peso que se calculo antes
+
+                    Documento docAux = (Documento) hmDocs.remove(docAInsertar.getNombre());
+
+                    docAInsertar.setPeso(docAux.getPeso() + docAInsertar.getPeso());
+
+                    hmDocs.put(docAInsertar.getNombre(), docAInsertar);
+                } else {
+                    hmDocs.put(docAInsertar.getNombre(), docAInsertar);//agregas el documentos al HM
                 }
-                else{
-                    hmDocs.put(doc.getNombre(),doc.getPeso());//agregas el documentos al HM
-                }    
-                
+
             }
-            
-            
-            //)===================Test===============================
-            for (Object object : arrayfr) {
-                
-                FilaRankeo fr=(FilaRankeo)object;
-                fr.setPeso(fr.getPeso()+fr.calcularPeso(arrayfr.size(), 500));
-            }
-            documentosConsulta.addAll(arrayfr);
-            //loadRankeo devuelve array de los documentos por cada termino y los cargamos en un array list
-            //documentosConsulta es un array de FilaRankeo
-            
+
         }
         
-        for (Object object : terminosConsulta) {
-            
-           Termino termino=(Termino) object;
-           
-           
-        }
-        
-        
+        ArrayList<Documento> resultadoConsulta = new ArrayList<>(hmDocs.values());//Mete lo del hash map enun array list para ordenarlo por peso
+        Collections.sort(resultadoConsulta);//Este es el array list de documento ordenado por peso
     }
 }

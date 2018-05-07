@@ -52,7 +52,7 @@ public class TablaPosteo {
                 stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
                 
                 stmaux.close();
-                c.commit();
+//                c.commit();
                 
                 aux="";
                 contador=0;
@@ -89,7 +89,7 @@ public class TablaPosteo {
                 stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
                 
                 stmaux.close();
-                c.commit();
+//                c.commit();//Fijarse que esto se puede sacar para disminuir tiempo ejecucion
                 
                 aux="";
                 contador=0;
@@ -102,19 +102,25 @@ public class TablaPosteo {
         c.close();
     }
 
-    public ArrayList loadRankeo(String terminoBuscado) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
+    public ArrayList loadRankeo(Termino termino) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
         //Recupera de la base de datos un mapa con todos los elementos.
         ArrayList<FilaRankeo> array = new ArrayList<>();
+        
+//        int r=10, auxR=10;
+//        if (termino.getCantDocumentos()<r) {
+//            auxR=termino.getCantDocumentos();
+//        }
+        
         try {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();
             Statement stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + terminoBuscado + "' FETCH FIRST 10 ROWS ONLY");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + termino.getId_termino() + "' FETCH FIRST 10 ROWS ONLY");
 
             FilaRankeo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
 
             while (rs.next()) {
-                aux = new FilaRankeo(rs.getString("ID_TERMINO"),rs.getString("ID_DOCUMENTO"),rs.getInt("FRECUENCIA"),0);
+                aux = new FilaRankeo(rs.getString("ID_TERMINO"),rs.getString("ID_DOCUMENTO"),rs.getInt("FRECUENCIA"),0,rs.getString("TITULO"));
                 
                 array.add(aux);
             }

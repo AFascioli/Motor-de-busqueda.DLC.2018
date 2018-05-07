@@ -17,15 +17,25 @@ public class FilaRankeo implements Comparable{
     private String documento;
     private int frecuencia;
     private double peso;
+    private String titulo;
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
 
     public FilaRankeo() {
     }
 
-    public FilaRankeo(String id_termino, String documento, int frecuencia, double peso) {
+    public FilaRankeo(String id_termino, String documento, int frecuencia, double peso, String titulo) {
         this.id_termino = id_termino;
         this.documento = documento;
         this.frecuencia = frecuencia;
         this.peso=peso;
+        this.titulo=titulo;
     }
 
     public double getPeso() {

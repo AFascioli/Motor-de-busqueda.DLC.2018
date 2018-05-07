@@ -14,14 +14,24 @@ public class FilaPosteo implements Comparable {
     private String id_termino;
     private String documento;
     private int frecuencia;
+    private String titulo;
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+    
     public FilaPosteo() {
     }
 
-    public FilaPosteo(String id_termino, String documento, int frecuencia) {
+    public FilaPosteo(String id_termino, String documento, int frecuencia, String titulo) {
         this.id_termino = id_termino;
         this.documento = documento;
         this.frecuencia = frecuencia;
+        this.titulo=titulo;
     }
 
     public String getId_termino() {
