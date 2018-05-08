@@ -53,12 +53,12 @@ public class Documento implements Comparable{
         Documento doc = (Documento) o;
 
         if (this.peso > doc.getPeso()) {
-            return 1;
+            return -1;
         } else {
             if (this.peso == doc.getPeso()) {
                 return 0;
             } else {
-                return -1;
+                return 1;
             }
         }
     }

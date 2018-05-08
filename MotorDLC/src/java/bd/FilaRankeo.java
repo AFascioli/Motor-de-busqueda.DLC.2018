@@ -70,7 +70,13 @@ public class FilaRankeo implements Comparable{
 
     public double calcularPeso(int cantDocsTerm, int cantDocsTotal)
     {
-        double pesoCalc=this.frecuencia*(Math.log((cantDocsTotal/cantDocsTerm)));
+        double factorStopWord=0.3;//si no entra al if, es una stop word y se le disminuira el peso a ese termino
+        
+        if ((cantDocsTerm/cantDocsTotal)<=0.6) {
+            factorStopWord=1;
+        }
+        
+        double pesoCalc=factorStopWord*(this.frecuencia*(Math.log((cantDocsTotal/cantDocsTerm))));
         return pesoCalc;
     }
     

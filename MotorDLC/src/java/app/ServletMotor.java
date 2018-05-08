@@ -6,8 +6,16 @@ package app;
  * and open the template in the editor.
  */
 
+import bd.Documento;
+import bd.FilaRankeo;
+import bd.TablaPosteo;
+import datos.Termino;
+import datos.Vocabulario;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -30,6 +38,10 @@ public class ServletMotor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -46,9 +58,12 @@ public class ServletMotor extends HttpServlet {
             //Alumno alumno = DBAlumno.loadDB(db, id);
             //----------------------------------------
             
-            Resultado res = new Resultado("Este es el resultado");
-            
-            request.setAttribute("resultado", res);
+//            TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
+//            
+//            Map termHM=tp.loadVocabulario();
+//            
+//            request.setAttribute("terminoHM",termHM);
+
                 dest = "/index.html";
         }
         catch (Exception e) {

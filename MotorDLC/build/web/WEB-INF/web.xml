@@ -4,9 +4,17 @@
         <servlet-name>ServletMotor</servlet-name>
         <servlet-class>app.ServletMotor</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletConsulta2</servlet-name>
+        <servlet-class>app.ServletConsulta2</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletMotor</servlet-name>
         <url-pattern>/servletmotor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletConsulta2</servlet-name>
+        <url-pattern>/servletconsulta2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

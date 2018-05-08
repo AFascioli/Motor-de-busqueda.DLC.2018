@@ -116,7 +116,6 @@ public class TablaPosteo {
             stmt.close();
             c.close();
 
-            Collections.sort(array);
             
 
         } catch (SQLException ex) {

@@ -32,12 +32,15 @@ public class Vocabulario {
     }
     
     public ArrayList obtenerTerminosConsulta(String consulta){ //Toma la consulta y devuelve un Arraylist de terminos ordenado segun cantidad de documento (ascendente)
-        ArrayList res=new ArrayList();
         
-        String []aux=consulta.split(" ");
+        ArrayList <Termino>res=new ArrayList<>();
+        String aux2=consulta.toUpperCase();
+        
+        String []aux=aux2.split(" ");
         
         for (int i = 0; i < aux.length; i++) {
-            res.add(this.vocabulario.get(aux[i]));
+            res.add((Termino) this.vocabulario.get(aux[i]));
+            
         }
         
         Collections.sort(res);

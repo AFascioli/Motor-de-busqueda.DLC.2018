@@ -27,17 +27,17 @@ public class Main {
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
 
         //========================test==============================
-        File dir = new File("./Documentos a leer");
-        File[] archivos = dir.listFiles();
-        System.out.println("Cantidad de documentos: " + archivos.length);
-
-
-        ArchivoToHM arcToHM = new ArchivoToHM(archivos);
-        Map aux[] = arcToHM.fileToHM();
-        System.out.println("Tamaño TerminoHM: " + aux[0].size());
-        System.out.println("Tamaño PosteoHM: " + aux[1].size());
-        
-        archivos=null;
+//        File dir = new File("./Documentos a leer");
+//        File[] archivos = dir.listFiles();
+//        System.out.println("Cantidad de documentos: " + archivos.length);
+//
+//
+//        ArchivoToHM arcToHM = new ArchivoToHM(archivos);
+//        Map aux[] = arcToHM.fileToHM();
+//        System.out.println("Tamaño TerminoHM: " + aux[0].size());
+//        System.out.println("Tamaño PosteoHM: " + aux[1].size());
+//        
+//        archivos=null;
         
 //        TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
 
@@ -57,18 +57,19 @@ public class Main {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 
+        
     }
 
-    public void rankeo() throws ClassNotFoundException {
+    public static ArrayList rankeo() throws ClassNotFoundException, SQLException {
 
-        String consulta = "all our book";//Esto deberia ser un parametro, que es la consulta que hace el usuario
-
+        String consulta = "the and";//Esto deberia ser un parametro, que es la consulta que hace el usuario
+        
         TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
 
-        Vocabulario voc = new Vocabulario();
-
+        Vocabulario voc =new Vocabulario(tp.loadVocabulario());
+        
         ArrayList terminosConsulta = voc.obtenerTerminosConsulta(consulta);
-
+        
         Map hmDocs = new LinkedHashMap();
 
         for (Object o : terminosConsulta) {
@@ -104,5 +105,6 @@ public class Main {
         
         ArrayList<Documento> resultadoConsulta = new ArrayList<>(hmDocs.values());//Mete lo del hash map enun array list para ordenarlo por peso
         Collections.sort(resultadoConsulta);//Este es el array list de documento ordenado por peso
+        return resultadoConsulta;
     }
 }
