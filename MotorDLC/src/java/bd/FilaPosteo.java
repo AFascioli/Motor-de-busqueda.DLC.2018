@@ -74,9 +74,7 @@ public class FilaPosteo implements Comparable {
         }
     }
 
-    //============================NUEVA IMPLEMENTACION=================================
     public void aumentarFrecuencia() {
         this.frecuencia++;
     }
-    //============================NUEVA IMPLEMENTACION=================================
 }

@@ -1,12 +1,9 @@
 package bd;
 
-import datos.NodoDocumento;
-import datos.Posteo;
 import datos.Termino;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -34,21 +31,21 @@ public class ArchivoToHM {
     public Map[] fileToHM() {   //Genera un mapa con todas las palabras de un archivo seleccionado.
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
-        Map resp[] = new LinkedHashMap[2];
         
         String titulo="";
         int contador=0;
+        int auxcontador=0;
         try {
             for (Object o : this.file) {
+//                
                 contador++;
-//                System.out.println("Documento "+contador);
-                
+                auxcontador++;
                 File fa = (File) o; //Lectura del archivo
                 FileReader fr = new FileReader(fa);
                 BufferedReader br = new BufferedReader(fr);
                 //Inicializacion
                 String s = br.readLine();
-                
+                                
                 if (contador<3){ //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
                     titulo+=s;
                 }
@@ -65,17 +62,16 @@ public class ArchivoToHM {
                     while (tokenizer.hasMoreTokens()) {
                         //Guardar las palabras para procesarlas.
                         String palabra = tokenizer.nextToken();
+                        
                         if (!terminoHM.containsKey(palabra)) //Primera vez que se encuentra la palabra.
                         {
-                            
-                            //============================NUEVA IMPLEMENTACION=================================
-                            
+                                                        
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
                             FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1,titulo);
                             posteoHM.put(palabra + fa.getName(), fp);
+//                            
                             
-                            //============================NUEVA IMPLEMENTACION=================================
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
                             
@@ -99,12 +95,12 @@ public class ArchivoToHM {
                                     
                                     FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1,titulo);
                                     posteoHM.put(palabra + fa.getName(), fp);
+//                                  
                                     
                                     Termino termAux=(Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
                                     termAux.setCantDocumentos(termAux.getCantDocumentos()+1);
                                     terminoHM.put(palabra, termAux);
                                 }
-                                //============================NUEVA IMPLEMENTACION=================================
                             
                         }
                     }
@@ -116,10 +112,14 @@ public class ArchivoToHM {
         } catch (Exception ex) {
             Logger.getLogger(ex.getLocalizedMessage());
         } finally {
+            
+            Map resp[] = new LinkedHashMap[2];
             resp[0]=terminoHM;
             resp[1]=posteoHM;
+            terminoHM=null;
+            posteoHM=null;
+            System.out.println("Archivos leidos: "+auxcontador);
             return resp;
         }
     }
-
 }

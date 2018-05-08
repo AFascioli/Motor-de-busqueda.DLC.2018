@@ -6,8 +6,6 @@
 package bd;
 
 import datos.Termino;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +15,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- *
- * @author dlcusr
- */
 public class TablaPosteo {
 
     private String ruta;
@@ -45,7 +39,7 @@ public class TablaPosteo {
             aux+=" ('"+term.getId_termino()+"', "+term.getFrecuenciaMax()+", "+term.getCantDocumentos()+"),";
             
             contador++;
-            if (contador==10) { //Contador que indica cada cuanto ejecutar el insert
+            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux= c.createStatement();
                 stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
                 
@@ -79,12 +73,12 @@ public class TablaPosteo {
         for (Object t : posteo.values()) { //Recorre el hash de terminos
 
             FilaPosteo fp = (FilaPosteo) t;
-            aux+=" ( '"+fp.getId_termino()+"', '"+fp.getDocumento()+"', "+fp.getFrecuencia()+"),";
+            aux+=" ( '"+fp.getId_termino()+"', '"+fp.getDocumento()+"', "+fp.getFrecuencia()+",'"+fp.getTitulo()+"'),";
             
             contador++;
-            if (contador==10) { //Contador que indica cada cuanto ejecutar el insert
+            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux= c.createStatement();
-                stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
+                stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA,TITULO) VALUES "+aux.substring(0,aux.length()-1));
                 
                 stmaux.close();
 //                c.commit();//Fijarse que esto se puede sacar para disminuir tiempo ejecucion
@@ -94,7 +88,7 @@ public class TablaPosteo {
             }
         }
         
-        stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA) VALUES "+aux.substring(0,aux.length()-1));
+        stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA, TITULO) VALUES "+aux.substring(0,aux.length()-1));
         stm.close();
         c.commit();
         c.close();

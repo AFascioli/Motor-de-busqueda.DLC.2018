@@ -5,8 +5,6 @@
  */
 package bd;
 
-import java.util.logging.Logger;
-
 /**
  *
  * @author dlcusr
