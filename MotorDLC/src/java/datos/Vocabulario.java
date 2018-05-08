@@ -8,6 +8,7 @@ package datos;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -35,14 +36,19 @@ public class Vocabulario {
         
         ArrayList <Termino>res=new ArrayList<>();
         String aux2=consulta.toUpperCase();
+        StringTokenizer token=new StringTokenizer(aux2 , " $/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}`´&|%°<>~©ª¬'±+");
         
-        String []aux=aux2.split(" ");
-        
-        for (int i = 0; i < aux.length; i++) {
-            res.add((Termino) this.vocabulario.get(aux[i]));
+        while(token.hasMoreTokens())
+        {
+            Termino termAux=(Termino) this.vocabulario.get(token.nextToken());
+            
+            if (termAux!=null) {
+                res.add(termAux);
+            }
             
         }
         
+                
         Collections.sort(res);
         
         return res;

@@ -102,7 +102,7 @@ public class TablaPosteo {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();
             Statement stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + termino.getId_termino() + "' FETCH FIRST 10 ROWS ONLY");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + termino.getId_termino() + "' FETCH FIRST 50 ROWS ONLY");
 
             FilaRankeo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
 

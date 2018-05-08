@@ -38,23 +38,29 @@ and open the template in the editor.
 
             <div id="tablaResultado"> 
                 
-                <table>
-                    <tr>
-                        <th>Nombre de documento</th>
-                        <th>Peso</th>
-                        <th>Frecuencia de los terminos</th>
-                    </tr>
-                    
-                    <c:forEach items="${resultado}" var="documento" begin="0" end="5" >
-                    <tr>
-                        <td><c:out value="${documento.nombre}"> </c:out> </td>
-                        <td><c:out value="${documento.peso}"> </c:out></td>
-                    </tr>
-                    </c:forEach>
-                    
-                </table>
-                    
-                    
+                
+                    <c:choose>
+                        <c:when test="${resultado==false}">
+                            <label>EROR</label>
+                        </c:when>
+                        <c:otherwise>
+                            <table>
+                                <tr>
+                                    <th>Nombre de documento</th>
+                                    <th>Peso</th>
+                                    <th>Frecuencia de los terminos</th>
+                                </tr>
+
+                            <c:forEach items="${resultado}" var="documento" begin="0" end="5" >
+                                <tr>
+                                    <td><c:out value="${documento.nombre}"> </c:out> </td>
+                                    <td><c:out value="${documento.peso}"> </c:out></td>
+                                </tr>
+                            </c:forEach>
+
+                        </table>
+                        </c:otherwise>
+                    </c:choose>
                 
             </div>
             <footer>
