@@ -221,4 +221,35 @@ public class ArchivoToHM {
             return resp;
         }
     }
+    
+    public Map actualizarTerminoHM(Map nuevo, Map vocab)
+    {
+        for (Object term : nuevo.values()) {
+            Termino termino= (Termino)term;
+            
+            for (Object termVoc : vocab.values()) {
+                
+                Termino terminoVoc= (Termino)termVoc;
+                
+                if (vocab.get(termino.getId_termino())!=null) {//El termino de nuevo documento esta en el vocabulario
+                    
+                    terminoVoc.setCantDocumentos(terminoVoc.getCantDocumentos()+termino.getCantDocumentos());
+                    
+                    if (terminoVoc.getFrecuenciaMax()<termino.getFrecuenciaMax()) {
+                        terminoVoc.setFrecuenciaMax(termino.getFrecuenciaMax());
+                    }
+                    
+                    vocab.put(terminoVoc.getId_termino(), terminoVoc);
+                }
+                
+                else{
+                    
+                    vocab.put(termino.getId_termino(), termino);  //Si no esta en el HM, se lo agregamos
+                }
+            }
+        }
+        
+        return vocab;
+    }
+    
 }

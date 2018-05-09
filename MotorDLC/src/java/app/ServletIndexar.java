@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,36 +39,35 @@ public class ServletIndexar extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
         try {
 //                PrintWriter out = response.getWriter()) {
-            
-            File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/DocNuevo");
+
+            File dir = new File("/home/dlcusr/Paraindexar/");
             File[] archivos = dir.listFiles();
 
             ArchivoToHM arcToHM = new ArchivoToHM(archivos);
             Map aux[] = arcToHM.fileToHM();
 
             archivos = null;
-      
+
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
+            
+            HttpSession session = request.getSession();
+            Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
+            
+            session.setAttribute("vocabulario",vocabulario);
+            aux[0] = null;
+            tp.actualizarPosteo(aux[1]);
+            aux[1] = null;
 
-//            try {
-                System.out.println("boi");
-                tp.insertarTerminoHM(aux[0]);
-                aux[0] = null;
-                tp.insertarPosteoHM(aux[1]);
-                aux[1] = null;
-                
 //                request.setAttribute("indexado",true);
+        } catch (ClassNotFoundException | SQLException ex ) {
+                request.setAttribute("indexado",false);
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-            } catch (ClassNotFoundException | SQLException ex) {
-//                request.setAttribute("indexado",false);
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    
-        
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher("/index.html");
         disp.forward(request, response);
@@ -84,7 +85,10 @@ public class ServletIndexar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         processRequest(request, response);
+        
+        
     }
 
     /**
@@ -98,7 +102,10 @@ public class ServletIndexar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       
         processRequest(request, response);
+        
+        
     }
 
     /**

@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,14 +39,15 @@ public class ServletConsulta2 extends HttpServlet {
 //        String dest = "";
         try {
             Renombrar gestor= new Renombrar();
+                        
+//            Map vocab=tp.loadVocabulario(); //Esto no se deberia hacer aca, sino que se deberia cargar el vocabulario una vez (en servletMotor)
             
-            TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-            
-            Map vocab=tp.loadVocabulario();
+            HttpSession session = request.getSession();
+            Map vocabulario = (Map) session.getAttribute("vocabulario");
             
             String consulta=request.getParameter("txt_busqueda");
             
-            List resultado=gestor.rankeo(vocab, consulta);
+            List resultado=gestor.rankeo(vocabulario, consulta);
             
             if (resultado==null) {
                 request.setAttribute("resultado",null);
@@ -55,7 +57,7 @@ public class ServletConsulta2 extends HttpServlet {
             }
             
         }
-        catch (ClassNotFoundException | SQLException e) {
+        catch (ClassNotFoundException e) {
 //             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
 //            request.setAttribute("errorMsg", errorMsg);
         }

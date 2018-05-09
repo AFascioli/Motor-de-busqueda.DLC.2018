@@ -6,22 +6,15 @@ package app;
  * and open the template in the editor.
  */
 
-import bd.Documento;
-import bd.FilaRankeo;
 import bd.TablaPosteo;
-import datos.Termino;
-import datos.Vocabulario;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -58,13 +51,13 @@ public class ServletMotor extends HttpServlet {
             //Alumno alumno = DBAlumno.loadDB(db, id);
             //----------------------------------------
             
-//            TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-//            
-//            Map termHM=tp.loadVocabulario();
-//            
-//            request.setAttribute("terminoHM",termHM);
-
-                dest = "/index.html";
+            TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
+            
+            HttpSession session= request.getSession();
+            
+            session.setAttribute("vocabulario",tp.loadVocabulario());
+            
+            dest = "/index.html";
         }
         catch (Exception e) {
 //                errorMsg = new ErrorMsg(errorTitle, e.getMessage());

@@ -23,6 +23,7 @@ public class Main {
     public static void main(String args[]) throws ClassNotFoundException, SQLException, IOException {
 
         File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/Documentos100");
+        
         File[] archivos = dir.listFiles();
         System.out.println("Cantidad de documentos:" + archivos.length);
 
