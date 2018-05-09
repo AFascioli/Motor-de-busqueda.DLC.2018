@@ -44,7 +44,6 @@ public class Renombrar {
 
             Termino term = (Termino) o;
             ArrayList arrayFR = tp.loadRankeo(term); //array filarankeo de cada termino
-            //)===================Test===============================
             //HM para los documentos
 
             for (Object object : arrayFR) {
@@ -66,14 +65,12 @@ public class Renombrar {
                 } else {
                     hmDocs.put(docAInsertar.getNombre(), docAInsertar);//agregas el documentos al HM
                 }
-
             }
-
         }
-        
         ArrayList<Documento> resultadoConsulta = new ArrayList<>(hmDocs.values());//Mete lo del hash map en un array list para ordenarlo por peso
         Collections.sort(resultadoConsulta);
         
-        return resultadoConsulta.subList(0, 9);//El segundo parametro nos indica cuantos documentos vamos a mostrar 
+        
+        return resultadoConsulta.subList(0, resultadoConsulta.size());//El segundo parametro nos indica cuantos documentos vamos a mostrar 
     }
 }

@@ -22,9 +22,7 @@ public class Main {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, IOException {
 
-        //========================test==============================
-//        File dir = new File("/home/dlcusr/Downloads/DocumentosTP1");
-        File dir = new File("/home/dlcusr/Downloads/Documentos100");
+        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/Documentos100");
         File[] archivos = dir.listFiles();
         System.out.println("Cantidad de documentos:" + archivos.length);
 
@@ -35,11 +33,11 @@ public class Main {
         System.out.println("Tamaño PosteoHM: " + aux[1].size());
         
         archivos=null;
-//        
+   
         TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-//
+
         try {
-//           tp.deleteTable("VOCABULARIO");
+         tp.deleteTable("VOCABULARIO");
             tp.insertarTerminoHM(aux[0]);
             
             aux[0]=null;//PARA LIBERAR MEMORIA????, LE MANDE PARA VER SI AYUDA

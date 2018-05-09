@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,34 +39,37 @@ public class ServletIndexar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-
-            File dir = new File("/");//COMPLETAR!!!!!!!
+        try {
+//                PrintWriter out = response.getWriter()) {
+            
+            File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/DocNuevo");
             File[] archivos = dir.listFiles();
 
             ArchivoToHM arcToHM = new ArchivoToHM(archivos);
             Map aux[] = arcToHM.fileToHM();
 
             archivos = null;
-//        
+      
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-//
-            try {
+
+//            try {
+                System.out.println("boi");
                 tp.insertarTerminoHM(aux[0]);
-
-                aux[0] = null;//PARA LIBERAR MEMORIA????, LE MANDE PARA VER SI AYUDA
-
+                aux[0] = null;
                 tp.insertarPosteoHM(aux[1]);
+                aux[1] = null;
+                
+//                request.setAttribute("indexado",true);
 
-                aux[1] = null;//PARA LIBERAR MEMORIA????, LE MANDE PARA VER SI AYUDA
-
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException | SQLException ex) {
+//                request.setAttribute("indexado",false);
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+    
+        
+        ServletContext app = this.getServletContext();
+        RequestDispatcher disp = app.getRequestDispatcher("/index.html");
+        disp.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

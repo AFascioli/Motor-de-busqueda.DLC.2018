@@ -3,21 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/bd/Documento.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/bd/ArchivoToHM.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/bd/ConexionBD.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/web/index.jsp</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/web/index.html</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/web/css/estilo.css</file>
+            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/app/ServletIndexar.java</file>
             <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/app/ServletConsulta2.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/app/ServletMotor.java</file>
             <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/app/Renombrar.java</file>
             <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/app/Main.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/bd/FilaRankeo.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/bd/TablaPosteo.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/web/WEB-INF/web.xml</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/datos/Termino.java</file>
-            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/src/java/datos/Vocabulario.java</file>
+            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/web/index.jsp</file>
+            <file>file:/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/web/index.html</file>
         </group>
     </open-files>
 </project-private>

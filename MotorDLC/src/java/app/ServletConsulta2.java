@@ -5,18 +5,11 @@
  */
 package app;
 
-import bd.Documento;
 import bd.TablaPosteo;
-import datos.Termino;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -42,7 +35,7 @@ public class ServletConsulta2 extends HttpServlet {
      protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String dest = "";
+//        String dest = "";
         try {
             Renombrar gestor= new Renombrar();
             
@@ -58,18 +51,16 @@ public class ServletConsulta2 extends HttpServlet {
                 request.setAttribute("resultado",null);
             }
             else
-            {
-               request.setAttribute("resultado",resultado); 
+            {  request.setAttribute("resultado",resultado); 
             }
             
-                dest = "/index.jsp";
         }
-        catch (Exception e) {
-//                errorMsg = new ErrorMsg(errorTitle, e.getMessage());
+        catch (ClassNotFoundException | SQLException e) {
+//             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
 //            request.setAttribute("errorMsg", errorMsg);
         }
         ServletContext app = this.getServletContext();
-        RequestDispatcher disp = app.getRequestDispatcher(dest);
+        RequestDispatcher disp = app.getRequestDispatcher("/index.jsp");
         disp.forward(request, response);
     }
 

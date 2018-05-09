@@ -13,6 +13,8 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <title>Buscador</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +34,12 @@ and open the template in the editor.
                     <input type="text" maxlength="120" id="txt_busqueda" name ="txt_busqueda" autofocus/>
                     <input type="submit" value="Buscar" name="buscar" />
                 </form>
-                
+                <form method="post" action="servletindexar">  
+                    <label id="cmd_indexar">
+                        Presione aqu&iacute; para indexar el nuevo archivo &nbsp;
+                    </label>
+                    <input type="submit" value="Indexar" name="index" />
+            </form>
 
             </div>
 
