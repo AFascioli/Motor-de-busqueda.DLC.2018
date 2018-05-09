@@ -38,7 +38,6 @@ and open the template in the editor.
 
             <div id="tablaResultado"> 
                 
-                
                     <c:choose>
                         <c:when test="${resultado==null}">
                             <label>EROR</label>

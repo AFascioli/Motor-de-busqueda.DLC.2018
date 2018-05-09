@@ -8,6 +8,10 @@
         <servlet-name>ServletConsulta2</servlet-name>
         <servlet-class>app.ServletConsulta2</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletIndexar</servlet-name>
+        <servlet-class>app.ServletIndexar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletMotor</servlet-name>
         <url-pattern>/servletmotor</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ServletConsulta2</servlet-name>
         <url-pattern>/servletconsulta2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletIndexar</servlet-name>
+        <url-pattern>/servletindexar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
