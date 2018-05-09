@@ -55,7 +55,7 @@ public class ServletConsulta2 extends HttpServlet {
             List resultado=gestor.rankeo(vocab, consulta);
             
             if (resultado==null) {
-                request.setAttribute("resultado",false);
+                request.setAttribute("resultado",null);
             }
             else
             {

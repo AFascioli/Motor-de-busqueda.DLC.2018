@@ -40,7 +40,7 @@ and open the template in the editor.
                 
                 
                     <c:choose>
-                        <c:when test="${resultado==false}">
+                        <c:when test="${resultado==null}">
                             <label>EROR</label>
                         </c:when>
                         <c:otherwise>

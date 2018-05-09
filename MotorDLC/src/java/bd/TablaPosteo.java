@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class TablaPosteo {
             aux+=" ('"+term.getId_termino()+"', "+term.getFrecuenciaMax()+", "+term.getCantDocumentos()+"),";
             
             contador++;
-            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
+            if (contador==250) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux= c.createStatement();
                 stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+aux.substring(0,aux.length()-1));
                 
@@ -76,7 +75,7 @@ public class TablaPosteo {
             aux+=" ( '"+fp.getId_termino()+"', '"+fp.getDocumento()+"', "+fp.getFrecuencia()+",'"+fp.getTitulo()+"'),";
             
             contador++;
-            if (contador==100) { //Contador que indica cada cuanto ejecutar el insert
+            if (contador==250) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux= c.createStatement();
                 stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA,TITULO) VALUES "+aux.substring(0,aux.length()-1));
                 

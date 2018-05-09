@@ -4,10 +4,16 @@ import datos.Termino;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ArchivoToHM {
 
@@ -19,8 +25,8 @@ public class ArchivoToHM {
 
     public String removeAcentos(String str) {
         //Reemplaza las vocales con acentos y dieresis por las vocales sin estos.
-        String acentos = "áÁäÄéÉëËíÍïÏóÓöÖúÚüÜ";
-        String correxion = "aAaAeEeEiIiIoOoOuUuU";
+        String acentos =   "áÁäÄéÉëËíÍïÏóÓöÖúÚüÜàèìòùÀÈÌÒÙ";
+        String correxion = "aAaAeEeEiIiIoOoOuUuUaeiouAEIOU";
         String corregido = str;
         for (int i = 0; i < acentos.length(); i++) {
             corregido = corregido.replace(acentos.charAt(i), correxion.charAt(i));
@@ -31,13 +37,13 @@ public class ArchivoToHM {
     public Map[] fileToHM() {   //Genera un mapa con todas las palabras de un archivo seleccionado.
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
-        
-        String titulo="";
-        int contador=0;
-        int auxcontador=0;
+
+        String titulo = "";
+        int contador = 0;
+        int auxcontador = 0;
         try {
             for (Object o : this.file) {
-//                
+
                 contador++;
                 auxcontador++;
                 File fa = (File) o; //Lectura del archivo
@@ -45,63 +51,63 @@ public class ArchivoToHM {
                 BufferedReader br = new BufferedReader(fr);
                 //Inicializacion
                 String s = br.readLine();
-                                
-                if (contador<3){ //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
-                    titulo+=s;
+
+                if (contador < 3) { //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
+                    titulo += s;
                 }
-                
+
                 StringTokenizer tokenizer;
                 char comilla = '"';
 
                 while (s != null) {
                     s = removeAcentos(s);
                     s = s.toUpperCase();
-                    
-                    tokenizer = new StringTokenizer(s, comilla + " $/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}`´&|%°<>~©ª¬'±+");
+
+                    tokenizer = new StringTokenizer(s, comilla + " Ø$/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}’`´¨&|%°<>~©ª¬'±+«»");
 
                     while (tokenizer.hasMoreTokens()) {
                         //Guardar las palabras para procesarlas.
                         String palabra = tokenizer.nextToken();
-                        
+
                         if (!terminoHM.containsKey(palabra)) //Primera vez que se encuentra la palabra.
                         {
-                                                        
+
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
-                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1,titulo);
+                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
                             posteoHM.put(palabra + fa.getName(), fp);
 //                            
-                            
+
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
-                            
-                                //============================NUEVA IMPLEMENTACION=================================
-                                if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
-                                    
-                                    FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
-                                    aux.aumentarFrecuencia();
-                                    posteoHM.put(palabra + fa.getName(), aux);
-                                    
-                                    Termino aux1= (Termino) terminoHM.remove(palabra);
-                                    
-                                    if (aux1.getFrecuenciaMax()<aux.getFrecuencia()) { //Chequear si hace falta actualizar la frecuencia maxima del termino
-                                        
-                                        aux1.setFrecuenciaMax(aux.getFrecuencia());
-                                        
-                                    }
-                                    terminoHM.put(palabra,aux1);
-                                    
-                                } else {    //Documento no esta en el hash de posteo
-                                    
-                                    FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1,titulo);
-                                    posteoHM.put(palabra + fa.getName(), fp);
-//                                  
-                                    
-                                    Termino termAux=(Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
-                                    termAux.setCantDocumentos(termAux.getCantDocumentos()+1);
-                                    terminoHM.put(palabra, termAux);
+
+                            //============================NUEVA IMPLEMENTACION=================================
+                            if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
+
+                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
+                                aux.aumentarFrecuencia();
+                                posteoHM.put(palabra + fa.getName(), aux);
+
+                                Termino aux1 = (Termino) terminoHM.remove(palabra);
+
+                                if (aux1.getFrecuenciaMax() < aux.getFrecuencia()) { //Chequear si hace falta actualizar la frecuencia maxima del termino
+
+                                    aux1.setFrecuenciaMax(aux.getFrecuencia());
+
                                 }
-                            
+                                terminoHM.put(palabra, aux1);
+
+                            } else {    //Documento no esta en el hash de posteo
+
+                                FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
+                                posteoHM.put(palabra + fa.getName(), fp);
+//                                  
+
+                                Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
+                                termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);
+                                terminoHM.put(palabra, termAux);
+                            }
+
                         }
                     }
                     s = br.readLine();
@@ -112,13 +118,106 @@ public class ArchivoToHM {
         } catch (Exception ex) {
             Logger.getLogger(ex.getLocalizedMessage());
         } finally {
-            
+
             Map resp[] = new LinkedHashMap[2];
-            resp[0]=terminoHM;
-            resp[1]=posteoHM;
-            terminoHM=null;
-            posteoHM=null;
-            System.out.println("Archivos leidos: "+auxcontador);
+            resp[0] = terminoHM;
+            resp[1] = posteoHM;
+            terminoHM = null;
+            posteoHM = null;
+            System.out.println("Archivos leidos: " + auxcontador);
+            return resp;
+        }
+    }
+
+    public Map[] fileToHM2() {   //Genera un mapa con todas las palabras de un archivo seleccionado.
+        Map terminoHM = new LinkedHashMap();
+        Map posteoHM = new LinkedHashMap();
+
+        String titulo = "";
+        int contador = 0;
+        try {
+            for (File fa : this.file) {
+
+                
+                
+                 //Lectura del archivo
+                List <String>fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
+                
+                //Inicializacion
+                for (String stringFile : fileList) {
+
+                    String s = stringFile.toString();
+                    contador++;
+                    if (contador < 3) { //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
+                        titulo += s;
+                    }
+
+                    StringTokenizer tokenizer;
+                    char comilla = '"';
+
+                    s = removeAcentos(s);
+                    s = s.toUpperCase();
+
+                    tokenizer = new StringTokenizer(s, comilla + " Ø$/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}’`´¨&|%°<>~©ª¬'±+«»");
+
+                    while (tokenizer.hasMoreTokens()) {
+                        //Guardar las palabras para procesarlas.
+                        String palabra = tokenizer.nextToken();
+
+                        if (!terminoHM.containsKey(palabra)) //Primera vez que se encuentra la palabra.
+                        {
+
+                            Termino termino = new Termino(palabra, 1, 1);
+                            terminoHM.put(palabra, termino);
+                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
+                            posteoHM.put(palabra + fa.getName(), fp);
+//                            
+
+                        } else //Se encuentra una palabra ya existente en el vocabulario.
+                        {
+
+                            //============================NUEVA IMPLEMENTACION=================================
+                            if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
+
+                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
+                                aux.aumentarFrecuencia();
+                                posteoHM.put(palabra + fa.getName(), aux);
+
+                                Termino aux1 = (Termino) terminoHM.remove(palabra);
+
+                                if (aux1.getFrecuenciaMax() < aux.getFrecuencia()) { //Chequear si hace falta actualizar la frecuencia maxima del termino
+
+                                    aux1.setFrecuenciaMax(aux.getFrecuencia());
+
+                                }
+                                terminoHM.put(palabra, aux1);
+
+                            } else {    //Documento no esta en el hash de posteo
+
+                                FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
+                                posteoHM.put(palabra + fa.getName(), fp);
+//                                  
+
+                                Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
+                                termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);
+                                terminoHM.put(palabra, termAux);
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ex.getLocalizedMessage());
+        } finally {
+
+            Map resp[] = new LinkedHashMap[2];
+            resp[0] = terminoHM;
+            resp[1] = posteoHM;
+            terminoHM = null;
+            posteoHM = null;
             return resp;
         }
     }
