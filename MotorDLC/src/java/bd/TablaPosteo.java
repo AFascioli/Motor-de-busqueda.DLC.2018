@@ -73,14 +73,15 @@ public class TablaPosteo {
 
             FilaPosteo fp = (FilaPosteo) t;
             aux += " ( '" + fp.getId_termino() + "', '" + fp.getDocumento() + "', " + fp.getFrecuencia() + ",'" + fp.getTitulo() + "'),";
-
+            
             contador++;
             if (contador == 250) { //Contador que indica cada cuanto ejecutar el insert
                 Statement stmaux = c.createStatement();
+
                 stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA,TITULO) VALUES " + aux.substring(0, aux.length() - 1));
 
                 stmaux.close();
-//                c.commit();//Fijarse que esto se puede sacar para disminuir tiempo ejecucion
+//                c.commit(); //Fijarse que esto se puede sacar para disminuir tiempo ejecucion
 
                 aux = "";
                 contador = 0;
