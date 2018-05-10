@@ -158,11 +158,12 @@ public class TablaPosteo {
         boolean bandera = false;
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
-        String check = "SELECT * FROM POSTEO WHERE ID_DOCUMENTO LIKE'" + fp.getDocumento() + "'";
+        String check = "SELECT * FROM POSTEO WHERE ID_DOCUMENTO LIKE '" + fp.getDocumento() + "'";
         Statement st = c.createStatement();
         ResultSet rs = st.executeQuery(check);
 
-        if (rs.first()) {
+        //if (rs.first()) {
+        if (rs.next()) {
             bandera = true;
         }
 
@@ -186,7 +187,7 @@ public class TablaPosteo {
 
             FilaPosteo fp = (FilaPosteo) t;
 
-            if (bandera&&this.estaDocumento(fp)) {  //para checkear que el documento no este en la base de datos
+            if (bandera && this.estaDocumento(fp)) {  //para checkear que el documento no este en la base de datos
                 stm.close();
                 c.commit();
                 c.close();

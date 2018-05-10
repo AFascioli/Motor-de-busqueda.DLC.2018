@@ -9,7 +9,6 @@ import bd.ArchivoToHM;
 import bd.TablaPosteo;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
@@ -44,7 +43,8 @@ public class ServletIndexar extends HttpServlet {
         try {
 //                PrintWriter out = response.getWriter()) {
 
-            File dir = new File("/home/dlcusr/Paraindexar/");
+            //File dir = new File("/home/dlcusr/Paraindexar/");
+            File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/DocNuevo/");
             File[] archivos = dir.listFiles();
 
             ArchivoToHM arcToHM = new ArchivoToHM(archivos);
@@ -61,8 +61,7 @@ public class ServletIndexar extends HttpServlet {
             aux[0] = null;
             tp.actualizarPosteo(aux[1]);
             aux[1] = null;
-
-//                request.setAttribute("indexado",true);
+            //request.setAttribute("indexado",true);
         } catch (ClassNotFoundException | SQLException ex ) {
                 request.setAttribute("indexado",false);
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

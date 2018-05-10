@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
@@ -80,9 +79,7 @@ public class ArchivoToHM {
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
-
-                            //============================NUEVA IMPLEMENTACION=================================
-                            if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
+                                 if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
 
                                 FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
                                 aux.aumentarFrecuencia();
@@ -101,7 +98,7 @@ public class ArchivoToHM {
 
                                 FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
                                 posteoHM.put(palabra + fa.getName(), fp);
-//                                  
+                            
 
                                 Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
                                 termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);
@@ -138,8 +135,6 @@ public class ArchivoToHM {
         try {
             for (File fa : this.file) {
 
-                
-                
                  //Lectura del archivo
                 List <String>fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
                 
@@ -170,13 +165,11 @@ public class ArchivoToHM {
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
                             FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
-                            posteoHM.put(palabra + fa.getName(), fp);
-//                            
+                            posteoHM.put(palabra + fa.getName(), fp);                           
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
 
-                            //============================NUEVA IMPLEMENTACION=================================
                             if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
 
                                 FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
@@ -196,7 +189,6 @@ public class ArchivoToHM {
 
                                 FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
                                 posteoHM.put(palabra + fa.getName(), fp);
-//                                  
 
                                 Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
                                 termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);
@@ -222,33 +214,25 @@ public class ArchivoToHM {
         }
     }
     
-    public Map actualizarTerminoHM(Map nuevo, Map vocab)
+     public Map actualizarTerminoHM(Map nuevo, Map vocab)
     {
         for (Object term : nuevo.values()) {
             Termino termino= (Termino)term;
-            
-            for (Object termVoc : vocab.values()) {
-                
-                Termino terminoVoc= (Termino)termVoc;
                 
                 if (vocab.get(termino.getId_termino())!=null) {//El termino de nuevo documento esta en el vocabulario
                     
-                    terminoVoc.setCantDocumentos(terminoVoc.getCantDocumentos()+termino.getCantDocumentos());
+                    Termino terminoVoc= (Termino) vocab.remove(termino.getId_termino());
                     
-                    if (terminoVoc.getFrecuenciaMax()<termino.getFrecuenciaMax()) {
-                        terminoVoc.setFrecuenciaMax(termino.getFrecuenciaMax());
+                    termino.setCantDocumentos(terminoVoc.getCantDocumentos()+termino.getCantDocumentos());
+                    
+                    if (terminoVoc.getFrecuenciaMax()>termino.getFrecuenciaMax()) {
+                        termino.setFrecuenciaMax(terminoVoc.getFrecuenciaMax());
                     }
-                    
-                    vocab.put(terminoVoc.getId_termino(), terminoVoc);
                 }
-                
-                else{
-                    
-                    vocab.put(termino.getId_termino(), termino);  //Si no esta en el HM, se lo agregamos
-                }
-            }
+                 vocab.put(termino.getId_termino(), termino);
+                 termino=null;
+            
         }
-        
         return vocab;
     }
     
