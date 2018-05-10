@@ -22,7 +22,7 @@ public class Main {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, IOException {
 
-        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/Documentos100");
+        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/Documentos50/");
         
         File[] archivos = dir.listFiles();
         System.out.println("Cantidad de documentos:" + archivos.length);
@@ -39,13 +39,15 @@ public class Main {
 
         try {
          tp.deleteTable("VOCABULARIO");
+         tp.deleteTable("POSTEO");
+         
             tp.insertarTerminoHM(aux[0]);
             
-            aux[0]=null;//PARA LIBERAR MEMORIA????, LE MANDE PARA VER SI AYUDA
+            aux[0]=null;
             
             tp.insertarPosteoHM(aux[1]);
             
-            aux[1]=null;//PARA LIBERAR MEMORIA????, LE MANDE PARA VER SI AYUDA
+            aux[1]=null;
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

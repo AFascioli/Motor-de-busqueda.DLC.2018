@@ -58,6 +58,7 @@ and open the template in the editor.
                     <c:otherwise>
                         <table>
                             <tr>
+                                <th>T&iacute;tulo</th>
                                 <th>Nombre de documento</th>
                                 <th>Peso</th>
                                 <th>Frecuencia de los terminos</th>
@@ -65,6 +66,7 @@ and open the template in the editor.
 
                             <c:forEach items="${resultado}" var="documento" begin="0" end="5" >
                                 <tr>
+                                    <td><a href="${documento.nombre}"><c:out value="${documento.titulo}"> </c:out></a></td>
                                     <td><c:out value="${documento.nombre}"> </c:out> </td>
                                     <td><c:out value="${documento.peso}"> </c:out></td>
                                     </tr>

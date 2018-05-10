@@ -73,17 +73,17 @@ public class ArchivoToHM {
 
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
-                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
-                            posteoHM.put(palabra + fa.getName(), fp);
+                            FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
+                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);
 //                            
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
-                                 if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
+                                 if (posteoHM.containsKey(palabra + fa.getAbsolutePath())) { //Documento esta en el hash de posteo
 
-                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
+                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getAbsolutePath());//Saca el documento y le aumenta la frecuencia para ese termino
                                 aux.aumentarFrecuencia();
-                                posteoHM.put(palabra + fa.getName(), aux);
+                                posteoHM.put(palabra + fa.getAbsolutePath(), aux);
 
                                 Termino aux1 = (Termino) terminoHM.remove(palabra);
 
@@ -96,8 +96,8 @@ public class ArchivoToHM {
 
                             } else {    //Documento no esta en el hash de posteo
 
-                                FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
-                                posteoHM.put(palabra + fa.getName(), fp);
+                                FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
+                                posteoHM.put(palabra + fa.getAbsolutePath(), fp);
                             
 
                                 Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
@@ -134,7 +134,8 @@ public class ArchivoToHM {
         int contador = 0;
         try {
             for (File fa : this.file) {
-
+                contador = 0;
+                titulo = "";
                  //Lectura del archivo
                 List <String>fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
                 
@@ -164,17 +165,17 @@ public class ArchivoToHM {
 
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
-                            FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
-                            posteoHM.put(palabra + fa.getName(), fp);                           
+                            FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo); //Cambio de getName a getPath
+                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);                           
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
 
-                            if (posteoHM.containsKey(palabra + fa.getName())) { //Documento esta en el hash de posteo
+                            if (posteoHM.containsKey(palabra + fa.getAbsolutePath())) { //Documento esta en el hash de posteo
 
-                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getName());//Saca el documento y le aumenta la frecuencia para ese termino
+                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getAbsolutePath());//Saca el documento y le aumenta la frecuencia para ese termino
                                 aux.aumentarFrecuencia();
-                                posteoHM.put(palabra + fa.getName(), aux);
+                                posteoHM.put(palabra + fa.getAbsolutePath(), aux);
 
                                 Termino aux1 = (Termino) terminoHM.remove(palabra);
 
@@ -187,8 +188,8 @@ public class ArchivoToHM {
 
                             } else {    //Documento no esta en el hash de posteo
 
-                                FilaPosteo fp = new FilaPosteo(palabra, fa.getName(), 1, titulo);
-                                posteoHM.put(palabra + fa.getName(), fp);
+                                FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
+                                posteoHM.put(palabra + fa.getAbsolutePath(), fp);
 
                                 Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
                                 termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);

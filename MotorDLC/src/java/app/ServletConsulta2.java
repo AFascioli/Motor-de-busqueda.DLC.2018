@@ -36,12 +36,10 @@ public class ServletConsulta2 extends HttpServlet {
      protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        String dest = "";
+
         try {
             Renombrar gestor= new Renombrar();
-                        
-//            Map vocab=tp.loadVocabulario(); //Esto no se deberia hacer aca, sino que se deberia cargar el vocabulario una vez (en servletMotor)
-            
+         
             HttpSession session = request.getSession();
             Map vocabulario = (Map) session.getAttribute("vocabulario");
             

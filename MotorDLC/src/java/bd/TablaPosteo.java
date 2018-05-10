@@ -125,7 +125,7 @@ public class TablaPosteo {
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
         Statement stmt = c.createStatement();
-        stmt.executeUpdate("delete from " + tabla);
+        stmt.executeUpdate("truncate table " + tabla);
         c.commit();
         c.close();
     }
@@ -162,7 +162,6 @@ public class TablaPosteo {
         Statement st = c.createStatement();
         ResultSet rs = st.executeQuery(check);
 
-        //if (rs.first()) {
         if (rs.next()) {
             bandera = true;
         }

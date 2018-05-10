@@ -41,10 +41,8 @@ public class ServletIndexar extends HttpServlet {
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
         try {
-//                PrintWriter out = response.getWriter()) {
-
             //File dir = new File("/home/dlcusr/Paraindexar/");
-            File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/DocNuevo/");
+            File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/DocNuevo/");
             File[] archivos = dir.listFiles();
 
             ArchivoToHM arcToHM = new ArchivoToHM(archivos);
