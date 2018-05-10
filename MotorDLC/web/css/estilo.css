@@ -4,38 +4,37 @@
 */
 
 header, footer{
-    padding: 1em;
+     background-color: #333333;
+     padding: 1em;
     color: white;
-    background-color: #333333;
     text-align: center;
     clear: left;
     bottom: 0;
 }
 
-table, th, td {
-    float: none;
-    border:2px solid black;
-    border-collapse: collapse;
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
-table {width: 100%;}
-
-td { text-align: center}
-footer{
-    bottom: 0px;
-    width: auto;
+.form-control{
+    max-width: 800px;
 }
 
 .container{
-    width: 100%;
-    border: 1px white;
+/*    width: 100%;
+    border: 1px white;*/
     background-color: whitesmoke;
 }
 
-#cuerpo{
+input[type=submit]{
+    display: inline-block;
     margin: 1em;
-    text-align: center;
-    height: 27em;
+    float: left;
+    
 }
 
-
+input[type=submit]:hover{
+    background-color: #4e9ffe;
+}

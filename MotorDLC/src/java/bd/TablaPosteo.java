@@ -107,8 +107,13 @@ public class TablaPosteo {
             FilaRankeo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
 
             while (rs.next()) {
-                aux = new FilaRankeo(rs.getString("ID_TERMINO"), rs.getString("ID_DOCUMENTO"), rs.getInt("FRECUENCIA"), 0, rs.getString("TITULO"));
-
+                aux = new FilaRankeo();
+                aux.setId_termino(rs.getString("ID_TERMINO"));
+                aux.setDocumento(rs.getString("ID_DOCUMENTO"));
+                aux.setFrecuencia(rs.getInt("FRECUENCIA"));
+                aux.setPeso(0);
+                aux.setTitulo(rs.getString("TITULO"));
+                
                 array.add(aux);
             }
 
