@@ -51,7 +51,17 @@ public class ArchivoToHM {
                 BufferedReader br = new BufferedReader(fr);
                 //Inicializacion
                 String slinea = br.readLine();
-                   
+                 
+                //PROBAMOS EL TITULO
+                
+                //Acumulacion y asignacion del titulo del archivo
+//                for (int i = 1; i < 3; i++) {
+//                      
+//                    String stringaux = fileList.get(i).replaceAll(comilla + " Ø$/,.*-#[]ºª@[]()!¡_?¿;=^÷{}’`´¨&|%°<>~©ª¬'±+«»","");
+//                        titulo += stringaux;
+//                        br.
+//                    
+//                }
                 StringTokenizer tokenizer;
                 char comilla = '"';
 
@@ -67,20 +77,13 @@ public class ArchivoToHM {
                         //Guardar las palabras para procesarlas.
                         String palabra = tokenizer.nextToken();
 
-                        //Carga del titulo, en las primeras dos lineas del texto
-                        if (contador < 3) { //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
-                        titulo += palabra+" ";
-                        }
-
-                        
                         if (!terminoHM.containsKey(palabra)) //Primera vez que se encuentra la palabra.
                         {
 
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
                             FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
-                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);
-//                            
+                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);                         
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
@@ -135,34 +138,41 @@ public class ArchivoToHM {
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
 
-        String titulo = "";
-        int contador = 0;
+        String titulo="";
         try {
             for (File fa : this.file) {
-                contador = 0;
-                titulo = "";
+
+                char comilla = '"';
+                //String titulo;
                  //Lectura del archivo
                 List <String>fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
+                //Lista para crear el titulo
+                List <String>listaTitulo = fileList.subList(0, 3);
+                //Acumulacion y asignacion del titulo del archivo
+                
+                String aReemplazar= " Ø$/,\\.*-#\\[\\]ºª@[0123456789]()!¡_?¿;=^÷\\{\\}’`´¨&\\|%°<>~©ª¬'±+«»\\:";
+                StringTokenizer tok;
+                StringTokenizer tok1;
+                if (listaTitulo.get(0).isEmpty()) {
+                    
+                     tok = new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar) ;
+                     tok1= new StringTokenizer(listaTitulo.get(2), comilla + aReemplazar) ;
+                     titulo+= tok+""+tok1;
+                    //titulo =  listaTitulo.get(1).replaceAll(comilla + aReemplazar ,"") +" "+ listaTitulo.get(2).replaceAll(comilla + aReemplazar,"");
+                } else 
+                {
+                     tok = new StringTokenizer(listaTitulo.get(0), comilla + aReemplazar) ;
+                     tok1= new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar) ;                    
+                     titulo+= tok+""+tok1;
+                   // titulo =  listaTitulo.get(0).replaceAll(comilla + aReemplazar,"") +" "+ listaTitulo.get(1).replaceAll(comilla + aReemplazar,"");
+                }
                 
                 //Inicializacion
                 for (String stringFile : fileList) {
                     
                     String s = stringFile.toString();
-                   
-                    contador++;
-
-                   
                     StringTokenizer tokenizer;
-                    char comilla = '"';
-
-                     
-                    if (contador < 3) { //Para agregarle el titulo a el documento (las dos primeras lineas del libro)
-                        
-                        String stringaux = s.replaceAll(comilla + " Ø$/:,.*-#[]ºª@[0123456789]()!¡_?¿;=^÷{}’`´¨&|%°<>~©ª¬'±+«»","");
-                        titulo += stringaux;
-                        
-                        //System.out.println(fa.getPath()+": "+titulo);
-                    }
+                    
                     s = removeAcentos(s);
                     s = s.toUpperCase();
 
@@ -174,7 +184,6 @@ public class ArchivoToHM {
                         
                         if (!terminoHM.containsKey(palabra)) //Primera vez que se encuentra la palabra.
                         {
-
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
                             FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo); //Cambio de getName a getPath

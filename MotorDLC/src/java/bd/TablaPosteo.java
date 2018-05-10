@@ -43,7 +43,7 @@ public class TablaPosteo {
                 stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES " + aux.substring(0, aux.length() - 1));
 
                 stmaux.close();
-//                c.commit();
+                //c.commit();
 
                 aux = "";
                 contador = 0;

@@ -24,28 +24,26 @@ and open the template in the editor.
     <body>
         
                 <header class="header">
-                    Motor de b&uacute;squeda
-                </header>
-            
-            <div class="col-md-12" id="buscador">
-                <div id="cuerpobuscador">
-                    <form method="post" action="servletconsulta2">
-                        <label id="campobusqueda">
-                            Ingrese texto de b&uacute;squeda: &nbsp;
-                        </label>
-                        <input class="form-control" type="text" placeholder="Ingrese su b&uacute;squeda" maxlength="120" id="txt_busqueda" name ="txt_busqueda" autofocus/>
-                        <input class="btn btn-md btn-primary" type="submit" value="Buscar" name="buscar" />
-                    </form>
-                    <form method="post" action="servletindexar">  
-                        <label id="cmd_indexar">
-                            Presione aqu&iacute; para indexar el nuevo archivo &nbsp;
-                        </label>
-                        <input class="btn btn-md btn-primary" type="submit" value="Indexar" name="index" />
-                    </form>
+            Dise&nacute;o de Lenguajes de Consulta, 2018
+        </header>
 
+        <div id="cuerpo" style="text-align: center" >
+            <label id="campobusqueda" style="font-size: 30px; ">
+                Motor de b&uacute;squeda &nbsp;
+            </label>
+            <div class="col-md-12" style="line-height: 40px;">
+            <form method="post" action="servletconsulta2">
+                <div style="text-align: center">
+                    <input class="form-control" type="text" style="margin-left: 20%; margin-right: 25%" placeholder="Ingrese su b&uacute;squeda" maxlength="120" id="txt_busqueda" name ="txt_busqueda" autofocus/>
                 </div>
-            </div>  
-
+                    <input class="btn btn-md btn-primary" style="margin-left: 20%;" type="submit" value="Buscar" name="buscar" />
+            </form>
+            <form method="post" action="servletindexar">  
+                    <input class="btn btn-md btn-primary" style="margin-right: 20%;" type="submit" value="Indexar nuevos archivos" name="index" />
+            </form>
+        </div>
+    </div>
+        
             <div class="col-md-12" id="resultado">
                 <c:choose>
                     <c:when test="${resultado==null}">
@@ -54,12 +52,14 @@ and open the template in the editor.
                     <c:otherwise>
                         <div    class="table-responsive">
                             <table class="table table-striped">
+                                <div id="colname">
                                 <tr>
                                     <th>T&iacute;tulo</th>
                                     <th>Nombre de documento</th>
                                     <th>Peso</th>
                                     <th>Frecuencia de los terminos</th>
                                 </tr>
+                                </div>
 
                                 <c:forEach items="${resultado}" var="documento" begin="0" end="5" >
                                     <tr>
@@ -77,7 +77,6 @@ and open the template in the editor.
             </div>
         
         <footer class="footer">
-            Dise&nacute;o de Lenguajes de Consulta, 2018
             Autores: Ponce Diego, Bargiano Florencia y Fascioli Agust&iacute;n
         </footer> 
 

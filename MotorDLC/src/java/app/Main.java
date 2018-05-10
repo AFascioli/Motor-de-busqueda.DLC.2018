@@ -29,7 +29,7 @@ public class Main {
 
 
         ArchivoToHM arcToHM = new ArchivoToHM(archivos);
-        Map aux[] = arcToHM.fileToHM();
+        Map aux[] = arcToHM.fileToHM2();
         System.out.println("Tamaño TerminoHM: " + aux[0].size());
         System.out.println("Tamaño PosteoHM: " + aux[1].size());
         
@@ -54,9 +54,5 @@ public class Main {
         } catch (SQLException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-               
     }
-
-    
 }
