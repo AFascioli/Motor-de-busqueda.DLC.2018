@@ -22,9 +22,9 @@ public class Main {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, IOException {
 
-//        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/Documentos50/");
-        File dir = new File("/home/dlcusr/Downloads/Documentos50/");
-        
+        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/Documentos50/");
+//        File dir = new File("/home/dlcusr/Downloads/Documentos50/");
+       
         File[] archivos = dir.listFiles();
         System.out.println("Cantidad de documentos:" + archivos.length);
 
@@ -39,8 +39,8 @@ public class Main {
         TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
 
         try {
-//         tp.deleteTable("VOCABULARIO");
-//         tp.deleteTable("POSTEO");
+         tp.deleteTable("VOCABULARIO");
+         tp.deleteTable("POSTEO");
          
             tp.insertarTerminoHM(aux[0]);
             

@@ -142,7 +142,7 @@ public class ArchivoToHM {
         //Prueba diegote
         try {
             for (File fa : this.file) {
-                nombreArc="./"+fa.getName();
+                nombreArc="./Documentos50/"+fa.getName();
                 char comilla = '"';
                 //String titulo;
                 //Lectura del archivo

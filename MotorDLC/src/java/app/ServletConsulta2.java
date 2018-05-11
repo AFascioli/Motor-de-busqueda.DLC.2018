@@ -47,6 +47,8 @@ public class ServletConsulta2 extends HttpServlet {
             
             List resultado=gestor.rankeo(vocabulario, consulta);
             
+            request.setAttribute("busqueda",consulta);
+            
             if (resultado==null) {
                 request.setAttribute("resultado",null);
             }

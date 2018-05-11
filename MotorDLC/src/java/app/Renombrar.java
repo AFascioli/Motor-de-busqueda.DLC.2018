@@ -52,14 +52,15 @@ public class Renombrar {
                 Documento docAInsertar = new Documento();
 
                 docAInsertar.setNombre(fr.getDocumento());
-                docAInsertar.setPeso(fr.calcularPeso(arrayFR.size(), 500));//500 es la cantidad total de documentos
+                double valorAInsertar= Math.floor(fr.calcularPeso(arrayFR.size(), 500) * 100) / 100;
+                docAInsertar.setPeso(valorAInsertar);//500 es la cantidad total de documentos
                 docAInsertar.setTitulo(fr.getTitulo());
 
                 if (hmDocs.containsKey(docAInsertar.getNombre())) {//Si el documento ya esta en el HM, lo saca y le suma el peso que se calculo antes
 
                     Documento docAux = (Documento) hmDocs.remove(docAInsertar.getNombre());
-
-                    docAInsertar.setPeso(docAux.getPeso() + docAInsertar.getPeso());
+                    double valorAInsertar1= Math.floor((docAux.getPeso() + docAInsertar.getPeso()) * 100) / 100;
+                    docAInsertar.setPeso(valorAInsertar1);
 
                     hmDocs.put(docAInsertar.getNombre(), docAInsertar);
                 } else {
