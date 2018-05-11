@@ -56,9 +56,14 @@ input[type=submit]{
     display: inline-block;
     margin: 1em;
     float: left;
+    box-shadow: 1px 1px 4px gray; 
     
 }
 
 input[type=submit]:hover{
     background-color: #4e9ffe;
+}
+
+a:visited{
+    color: purple;
 }

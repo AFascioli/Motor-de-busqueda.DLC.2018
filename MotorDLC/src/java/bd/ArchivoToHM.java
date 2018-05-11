@@ -24,7 +24,7 @@ public class ArchivoToHM {
 
     public String removeAcentos(String str) {
         //Reemplaza las vocales con acentos y dieresis por las vocales sin estos.
-        String acentos =   "áÁäÄéÉëËíÍïÏóÓöÖúÚüÜàèìòùÀÈÌÒÙ";
+        String acentos = "áÁäÄéÉëËíÍïÏóÓöÖúÚüÜàèìòùÀÈÌÒÙ";
         String correxion = "aAaAeEeEiIiIoOoOuUuUaeiouAEIOU";
         String corregido = str;
         for (int i = 0; i < acentos.length(); i++) {
@@ -32,7 +32,7 @@ public class ArchivoToHM {
         }
         return corregido;
     }
-    
+
     public Map[] fileToHM() {   //Genera un mapa con todas las palabras de un archivo seleccionado.
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
@@ -43,17 +43,16 @@ public class ArchivoToHM {
         try {
             for (Object o : this.file) {
                 contador = 0;
-                titulo="";
-                
+                titulo = "";
+
                 auxcontador++;
                 File fa = (File) o; //Lectura del archivo
                 FileReader fr = new FileReader(fa);
                 BufferedReader br = new BufferedReader(fr);
                 //Inicializacion
                 String slinea = br.readLine();
-                 
+
                 //PROBAMOS EL TITULO
-                
                 //Acumulacion y asignacion del titulo del archivo
 //                for (int i = 1; i < 3; i++) {
 //                      
@@ -67,7 +66,7 @@ public class ArchivoToHM {
 
                 while (slinea != null) {
                     contador++;
-                     
+
                     slinea = removeAcentos(slinea);
                     slinea = slinea.toUpperCase();
 
@@ -83,11 +82,11 @@ public class ArchivoToHM {
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
                             FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
-                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);                         
+                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
-                                 if (posteoHM.containsKey(palabra + fa.getAbsolutePath())) { //Documento esta en el hash de posteo
+                            if (posteoHM.containsKey(palabra + fa.getAbsolutePath())) { //Documento esta en el hash de posteo
 
                                 FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getAbsolutePath());//Saca el documento y le aumenta la frecuencia para ese termino
                                 aux.aumentarFrecuencia();
@@ -106,7 +105,6 @@ public class ArchivoToHM {
 
                                 FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
                                 posteoHM.put(palabra + fa.getAbsolutePath(), fp);
-                            
 
                                 Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
                                 termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);
@@ -138,41 +136,50 @@ public class ArchivoToHM {
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
 
-        String titulo="";
+        String titulo = "";
         try {
             for (File fa : this.file) {
 
                 char comilla = '"';
                 //String titulo;
-                 //Lectura del archivo
-                List <String>fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
+                //Lectura del archivo
+                List<String> fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
                 //Lista para crear el titulo
-                List <String>listaTitulo = fileList.subList(0, 3);
+                List<String> listaTitulo = fileList.subList(0, 3);
                 //Acumulacion y asignacion del titulo del archivo
                 
-                String aReemplazar= " Ø$/,\\.*-#\\[\\]ºª@[0123456789]()!¡_?¿;=^÷\\{\\}’`´¨&\\|%°<>~©ª¬'±+«»\\:";
-                StringTokenizer tok;
-                StringTokenizer tok1;
+//                String aReemplazar = " Ø$/,\\.*-#\\[\\]ºª@[0123456789]()!¡_?¿;=^÷\\{\\}’`´¨&\\|%°<>~©ª¬'±+«»\\:";
+//                StringTokenizer tok;
+//                StringTokenizer tok1;
+
                 if (listaTitulo.get(0).isEmpty()) {
+//
+//                    tok = new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar);
+//                    tok1 = new StringTokenizer(listaTitulo.get(2), comilla + aReemplazar);
+//                    titulo += tok + "" + tok1;
+                    //titulo =listaTitulo.get(1) (comilla + aReemplazar ,"") +" "+ listaTitulo.get(2).replaceAll(comilla + aReemplazar,"");
+
+                    //PRUEBA DIEGOTE (ANDA)
+                    titulo=listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");
+                    //PRUEBA DIEGOTE (ANDA)
                     
-                     tok = new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar) ;
-                     tok1= new StringTokenizer(listaTitulo.get(2), comilla + aReemplazar) ;
-                     titulo+= tok+""+tok1;
-                    //titulo =  listaTitulo.get(1).replaceAll(comilla + aReemplazar ,"") +" "+ listaTitulo.get(2).replaceAll(comilla + aReemplazar,"");
-                } else 
-                {
-                     tok = new StringTokenizer(listaTitulo.get(0), comilla + aReemplazar) ;
-                     tok1= new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar) ;                    
-                     titulo+= tok+""+tok1;
-                   // titulo =  listaTitulo.get(0).replaceAll(comilla + aReemplazar,"") +" "+ listaTitulo.get(1).replaceAll(comilla + aReemplazar,"");
+                } else {
+//                    tok = new StringTokenizer(listaTitulo.get(0), comilla + aReemplazar);
+//                    tok1 = new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar);
+//                    titulo += tok + "" + tok1;
+                    // titulo =  listaTitulo.get(0).replaceAll(comilla + aReemplazar,"") +" "+ listaTitulo.get(1).replaceAll(comilla + aReemplazar,"");
+                    
+                    //PRUEBA DIEGOTE
+                    titulo=listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");
+                    //PRUEBA DIEGOTE
                 }
-                
+
                 //Inicializacion
                 for (String stringFile : fileList) {
-                    
+
                     String s = stringFile.toString();
                     StringTokenizer tokenizer;
-                    
+
                     s = removeAcentos(s);
                     s = s.toUpperCase();
 
@@ -181,13 +188,13 @@ public class ArchivoToHM {
                     while (tokenizer.hasMoreTokens()) {
                         //Guardar las palabras para procesarlas.
                         String palabra = tokenizer.nextToken();
-                        
+
                         if (!terminoHM.containsKey(palabra)) //Primera vez que se encuentra la palabra.
                         {
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
                             FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo); //Cambio de getName a getPath
-                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);                           
+                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
@@ -220,7 +227,7 @@ public class ArchivoToHM {
                     }
                 }
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(ex.getLocalizedMessage());
         } finally {
@@ -232,27 +239,26 @@ public class ArchivoToHM {
             return resp;
         }
     }
-    
-     public Map actualizarTerminoHM(Map nuevo, Map vocab)
-    {
+
+    public Map actualizarTerminoHM(Map nuevo, Map vocab) {
         for (Object term : nuevo.values()) {
-            Termino termino= (Termino)term;
-                
-                if (vocab.get(termino.getId_termino())!=null) {//El termino de nuevo documento esta en el vocabulario
-                    
-                    Termino terminoVoc= (Termino) vocab.remove(termino.getId_termino());
-                    
-                    termino.setCantDocumentos(terminoVoc.getCantDocumentos()+termino.getCantDocumentos());
-                    
-                    if (terminoVoc.getFrecuenciaMax()>termino.getFrecuenciaMax()) {
-                        termino.setFrecuenciaMax(terminoVoc.getFrecuenciaMax());
-                    }
+            Termino termino = (Termino) term;
+
+            if (vocab.get(termino.getId_termino()) != null) {//El termino de nuevo documento esta en el vocabulario
+
+                Termino terminoVoc = (Termino) vocab.remove(termino.getId_termino());
+
+                termino.setCantDocumentos(terminoVoc.getCantDocumentos() + termino.getCantDocumentos());
+
+                if (terminoVoc.getFrecuenciaMax() > termino.getFrecuenciaMax()) {
+                    termino.setFrecuenciaMax(terminoVoc.getFrecuenciaMax());
                 }
-                 vocab.put(termino.getId_termino(), termino);
-                 termino=null;
-            
+            }
+            vocab.put(termino.getId_termino(), termino);
+            termino = null;
+
         }
         return vocab;
     }
-    
+
 }
