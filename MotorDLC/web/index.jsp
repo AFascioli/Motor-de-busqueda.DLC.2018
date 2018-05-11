@@ -43,7 +43,6 @@ and open the template in the editor.
             </form>
         </div>
     </div>
-        
             <div class="col-md-12" id="resultado">
                 <c:choose>
                     <c:when test="${resultado==null}">

@@ -137,9 +137,12 @@ public class ArchivoToHM {
         Map posteoHM = new LinkedHashMap();
 
         String titulo = "";
+        //Prueba diegote
+        String nombreArc="";
+        //Prueba diegote
         try {
             for (File fa : this.file) {
-
+                nombreArc="./"+fa.getName();
                 char comilla = '"';
                 //String titulo;
                 //Lectura del archivo
@@ -193,17 +196,17 @@ public class ArchivoToHM {
                         {
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
-                            FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo); //Cambio de getName a getPath
-                            posteoHM.put(palabra + fa.getAbsolutePath(), fp);
+                            FilaPosteo fp = new FilaPosteo(palabra,nombreArc, 1, titulo); //Cambio de getName a getPath
+                            posteoHM.put(palabra + nombreArc, fp);
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
                         {
 
-                            if (posteoHM.containsKey(palabra + fa.getAbsolutePath())) { //Documento esta en el hash de posteo
+                            if (posteoHM.containsKey(palabra + nombreArc)) { //Documento esta en el hash de posteo
 
-                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + fa.getAbsolutePath());//Saca el documento y le aumenta la frecuencia para ese termino
+                                FilaPosteo aux = (FilaPosteo) posteoHM.remove(palabra + nombreArc);//Saca el documento y le aumenta la frecuencia para ese termino
                                 aux.aumentarFrecuencia();
-                                posteoHM.put(palabra + fa.getAbsolutePath(), aux);
+                                posteoHM.put(palabra + nombreArc, aux);
 
                                 Termino aux1 = (Termino) terminoHM.remove(palabra);
 
@@ -216,8 +219,8 @@ public class ArchivoToHM {
 
                             } else {    //Documento no esta en el hash de posteo
 
-                                FilaPosteo fp = new FilaPosteo(palabra, fa.getAbsolutePath(), 1, titulo);
-                                posteoHM.put(palabra + fa.getAbsolutePath(), fp);
+                                FilaPosteo fp = new FilaPosteo(palabra, nombreArc, 1, titulo);
+                                posteoHM.put(palabra + nombreArc, fp);
 
                                 Termino termAux = (Termino) terminoHM.remove(palabra);//Aumentar la cantidad de documentos del termino
                                 termAux.setCantDocumentos(termAux.getCantDocumentos() + 1);
