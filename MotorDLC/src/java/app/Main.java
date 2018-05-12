@@ -26,7 +26,7 @@ public class Main {
        
         File[] archivos = dir.listFiles();
         System.out.println("Cantidad de documentos:" + archivos.length);
-int cc =0;
+        int cc =0;
         for (File archivo : archivos) {
             cc++;
             System.out.println("Archivo "+cc+ ": "+archivo.getName());
@@ -46,16 +46,15 @@ int cc =0;
          tp.deleteTable("POSTEO");
          
             tp.insertarTerminoHM(aux[0]);
-            
             aux[0]=null;
-            
             tp.insertarPosteoHM(aux[1]);
-            
             aux[1]=null;
             
         } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 

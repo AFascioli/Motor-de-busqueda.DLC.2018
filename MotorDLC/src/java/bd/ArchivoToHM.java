@@ -148,6 +148,7 @@ public class ArchivoToHM {
             //for (File fa : this.file) {
               for (int i = 0; i < file.length; i++) {
                 File fa = file[i];
+                titulo="";
                 
                 contadorDoc++;
                 
@@ -160,11 +161,9 @@ public class ArchivoToHM {
                 List<String> listaTitulo = fileList.subList(0, 3);
                 //Acumulacion y asignacion del titulo del archivo
                 if (listaTitulo.get(0).isEmpty()) {
-
                     titulo=listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");
                     
                 } else {
-
                     titulo=listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");                  
                 }
 
@@ -202,9 +201,7 @@ public class ArchivoToHM {
                                 Termino aux1 = (Termino) terminoHM.remove(palabra);
 
                                 if (aux1.getFrecuenciaMax() < aux.getFrecuencia()) { //Chequear si hace falta actualizar la frecuencia maxima del termino
-
                                     aux1.setFrecuenciaMax(aux.getFrecuencia());
-
                                 }
                                 terminoHM.put(palabra, aux1);
 
@@ -223,6 +220,7 @@ public class ArchivoToHM {
             }
 
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(ex.getLocalizedMessage());
         } finally {
             Map resp[] = new LinkedHashMap[2];

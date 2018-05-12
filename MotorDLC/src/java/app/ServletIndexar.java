@@ -41,7 +41,7 @@ public class ServletIndexar extends HttpServlet {
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            //File dir = new File("/home/dlcusr/Paraindexar/");
+
             File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/DocNuevo/");
             File[] archivos = dir.listFiles();
 
@@ -59,7 +59,6 @@ public class ServletIndexar extends HttpServlet {
             aux[0] = null;
             tp.actualizarPosteo(aux[1]);
             aux[1] = null;
-            //request.setAttribute("indexado",true);
         } catch (ClassNotFoundException | SQLException ex ) {
                 request.setAttribute("indexado",false);
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

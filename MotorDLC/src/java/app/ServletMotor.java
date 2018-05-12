@@ -32,24 +32,11 @@ public class ServletMotor extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    
-    
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String dest = "";
         try {
-            /* TODO output your page here. You may use following sample code. */
-            //----------------------------------------
-            //Alumno alumno = SAC.getAlumno(id);
-            //----------------------------------------
-//            db = SAC.getSingleDB();
-//            Alumno alumno = DBAlumno.loadDB(db, id);
-            //----------------------------------------
-            //db = SAC.getPoolDB();
-            //Alumno alumno = DBAlumno.loadDB(db, id);
-            //----------------------------------------
             
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
             
