@@ -22,13 +22,16 @@ public class Main {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, IOException {
 
-        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/Documentos50/");
-//        File dir = new File("/home/dlcusr/Downloads/Documentos50/");
+        File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/DocumentosTP1/");
        
         File[] archivos = dir.listFiles();
         System.out.println("Cantidad de documentos:" + archivos.length);
-
-
+int cc =0;
+        for (File archivo : archivos) {
+            cc++;
+            System.out.println("Archivo "+cc+ ": "+archivo.getName());
+            
+        }
         ArchivoToHM arcToHM = new ArchivoToHM(archivos);
         Map aux[] = arcToHM.fileToHM2();
         System.out.println("Tamaño TerminoHM: " + aux[0].size());
@@ -49,7 +52,7 @@ public class Main {
             tp.insertarPosteoHM(aux[1]);
             
             aux[1]=null;
-
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

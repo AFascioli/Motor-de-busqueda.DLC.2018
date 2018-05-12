@@ -136,45 +136,36 @@ public class ArchivoToHM {
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
 
+        System.out.println("Largo de file:"+ file.length);
+        
         String titulo = "";
         //Prueba diegote
         String nombreArc="";
         //Prueba diegote
+        int contadorDoc =0;
+        
         try {
-            for (File fa : this.file) {
-                nombreArc="./Documentos50/"+fa.getName();
+            //for (File fa : this.file) {
+              for (int i = 0; i < file.length; i++) {
+                File fa = file[i];
+                
+                contadorDoc++;
+                
+                nombreArc="./DocumentosTP1/"+fa.getName();
                 char comilla = '"';
-                //String titulo;
+               
                 //Lectura del archivo
                 List<String> fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
                 //Lista para crear el titulo
                 List<String> listaTitulo = fileList.subList(0, 3);
                 //Acumulacion y asignacion del titulo del archivo
-                
-//                String aReemplazar = " Ø$/,\\.*-#\\[\\]ºª@[0123456789]()!¡_?¿;=^÷\\{\\}’`´¨&\\|%°<>~©ª¬'±+«»\\:";
-//                StringTokenizer tok;
-//                StringTokenizer tok1;
-
                 if (listaTitulo.get(0).isEmpty()) {
-//
-//                    tok = new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar);
-//                    tok1 = new StringTokenizer(listaTitulo.get(2), comilla + aReemplazar);
-//                    titulo += tok + "" + tok1;
-                    //titulo =listaTitulo.get(1) (comilla + aReemplazar ,"") +" "+ listaTitulo.get(2).replaceAll(comilla + aReemplazar,"");
 
-                    //PRUEBA DIEGOTE (ANDA)
                     titulo=listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");
-                    //PRUEBA DIEGOTE (ANDA)
                     
                 } else {
-//                    tok = new StringTokenizer(listaTitulo.get(0), comilla + aReemplazar);
-//                    tok1 = new StringTokenizer(listaTitulo.get(1), comilla + aReemplazar);
-//                    titulo += tok + "" + tok1;
-                    // titulo =  listaTitulo.get(0).replaceAll(comilla + aReemplazar,"") +" "+ listaTitulo.get(1).replaceAll(comilla + aReemplazar,"");
-                    
-                    //PRUEBA DIEGOTE
-                    titulo=listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");
-                    //PRUEBA DIEGOTE
+
+                    titulo=listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");                  
                 }
 
                 //Inicializacion
@@ -239,6 +230,8 @@ public class ArchivoToHM {
             resp[1] = posteoHM;
             terminoHM = null;
             posteoHM = null;
+            System.out.println("La cantidad de documentos indexados es: "+contadorDoc);
+            
             return resp;
         }
     }
