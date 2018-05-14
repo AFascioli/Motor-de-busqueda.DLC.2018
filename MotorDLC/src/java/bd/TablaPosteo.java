@@ -177,6 +177,24 @@ public class TablaPosteo {
         c.close();
         return bandera;
     }
+    
+     public boolean estaIDDocumento(String iddoc) throws ClassNotFoundException, SQLException {
+        boolean bandera = false;
+        ConexionBD conn = new ConexionBD(ruta);
+        Connection c = conn.conectar();
+        String check = "SELECT * FROM POSTEO WHERE ID_DOCUMENTO LIKE '%" + iddoc + "' FETCH FIRST 1 ROWS ONLY";
+        Statement st = c.createStatement();
+        ResultSet rs = st.executeQuery(check);
+
+        if (rs.next()) {
+            bandera = true;
+        }
+
+        st.close();
+        c.commit();
+        c.close();
+        return bandera;
+    }
 
     public void actualizarPosteo(Map posteoNuevo) throws ClassNotFoundException, SQLException {
         ConexionBD conn = new ConexionBD(ruta);
