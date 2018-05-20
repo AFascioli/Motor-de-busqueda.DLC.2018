@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bd;
 
-/**
- *
- * @author dlcusr
- */
 public class Documento implements Comparable{
     
     private String nombre;
@@ -61,7 +52,5 @@ public class Documento implements Comparable{
                 return 1;
             }
         }
-    }
-    
-    
+    }  
 }

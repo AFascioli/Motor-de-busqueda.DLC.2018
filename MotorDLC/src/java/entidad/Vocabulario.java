@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package datos;
+package entidad;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-/**
- *
- * @author dlcusr
- */
 public class Vocabulario {
     private Map vocabulario;
 
@@ -47,8 +38,7 @@ public class Vocabulario {
             }
             
         }
-        
-                
+             
         Collections.sort(res);
         
         return res;

@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package datos;
+package entidad;
 
-
-/**
- *
- * @author dlcusr
- */
 public class Termino implements Comparable{
     
     private String id_termino;
@@ -25,7 +15,6 @@ public class Termino implements Comparable{
     public Termino() {
     }
 
-            
     public String getId_termino() {
         return id_termino;
     }

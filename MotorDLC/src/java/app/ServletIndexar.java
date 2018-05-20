@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package app;
 
 import bd.ArchivoToHM;
@@ -10,7 +5,8 @@ import bd.TablaPosteo;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ConcurrentModificationException;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,36 +18,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author dlcusr
- */
 public class ServletIndexar extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
         try {
 
-            File dir = new File("/home/dlcusr/NetBeansProjects/Motor.DLC/MotorDLC/DocNuevo/");
+            File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\DocumentosAIndexar");
+            
+            //Armamos el vector filtrando los archivos que no tengan extension .txt 
+            LinkedList listaArchivos;
+            listaArchivos = new LinkedList();
+            
+//            for (File archivo : dir.listFiles()) {
+//                if(archivo.getName().endsWith(".txt")){
+//                    listaArchivos.add(archivo);
+//                    
+//                }
+//            }
+//             
+//            File[] archivos = Arrays.copyOf(listaArchivos.toArray(), listaArchivos.size() , File[].class );
+//            
             File[] archivos = dir.listFiles();
 
             ArchivoToHM arcToHM = new ArchivoToHM(archivos);
-            Map aux[] = arcToHM.fileToHM();
+            Map aux[] = arcToHM.fileToHM2();
 
             archivos = null;
 
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-            
+//            System.out.println("Test de estaIDDocumento: "+tp.estaIDDocumento("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\Documentos\\00weees110.txt"));
+                    
             HttpSession session = request.getSession();
             Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
             
@@ -59,9 +57,11 @@ public class ServletIndexar extends HttpServlet {
             aux[0] = null;
             tp.actualizarPosteo(aux[1]);
             aux[1] = null;
+            
         } catch (ClassNotFoundException | SQLException ex ) {
                 request.setAttribute("indexado",false);
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Indexar.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("errorMsg", ex.getMessage());
         }
 
         ServletContext app = this.getServletContext();

@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bd;
 
-import datos.Termino;
+import entidad.Termino;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,14 +38,11 @@ public class TablaPosteo {
                 stmaux.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES " + aux.substring(0, aux.length() - 1));
 
                 stmaux.close();
-                //c.commit();
 
                 aux = "";
                 contador = 0;
             }
         }
-
-        System.out.println("aux length:" + aux.length());//Como el contador no llega siempre a 100, los datos que quedan en el aux se los mando a esta ultima executeUpdate
 
         stm.executeUpdate("INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES " + aux.substring(0, aux.length() - 1));
 
@@ -81,8 +73,6 @@ public class TablaPosteo {
                 stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA,TITULO) VALUES " + aux.substring(0, aux.length() - 1));
 
                 stmaux.close();
-//                c.commit(); //Fijarse que esto se puede sacar para disminuir tiempo ejecucion
-
                 aux = "";
                 contador = 0;
             }
@@ -96,7 +86,7 @@ public class TablaPosteo {
 
     public ArrayList loadRankeo(Termino termino) throws ClassNotFoundException {//Parametro termino buscado deberia ser lo que el usuario ingresa en el buscador
         //Recupera de la base de datos un mapa con todos los elementos.
-        ArrayList<FilaRankeo> array = new ArrayList<>();
+        ArrayList<FilaPosteoRankeada> array = new ArrayList<>();
 
         try {
             ConexionBD conn = new ConexionBD(ruta);
@@ -104,10 +94,10 @@ public class TablaPosteo {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM POSTEO WHERE ID_TERMINO LIKE '" + termino.getId_termino() + "' FETCH FIRST 50 ROWS ONLY");
 
-            FilaRankeo aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
+            FilaPosteoRankeada aux; //Clase auxiliar para guardar en el hashmap termino, documento y su frecuencia
 
             while (rs.next()) {
-                aux = new FilaRankeo();
+                aux = new FilaPosteoRankeada();
                 aux.setId_termino(rs.getString("ID_TERMINO"));
                 aux.setDocumento(rs.getString("ID_DOCUMENTO"));
                 aux.setFrecuencia(rs.getInt("FRECUENCIA"));
@@ -164,7 +154,11 @@ public class TablaPosteo {
         boolean bandera = false;
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
-        String check = "SELECT * FROM POSTEO WHERE ID_DOCUMENTO LIKE '" + fp.getDocumento() + "'";
+        //Prueba de ruta absoluta para el nombre
+        String iddoc =fp.getDocumento();
+        iddoc = iddoc.substring(86, iddoc.length());
+        
+        String check = "SELECT DISTINCT * FROM POSTEO WHERE ID_DOCUMENTO LIKE '%" + iddoc + "' FETCH FIRST 1 ROWS ONLY";
         Statement st = c.createStatement();
         ResultSet rs = st.executeQuery(check);
 
@@ -182,7 +176,10 @@ public class TablaPosteo {
         boolean bandera = false;
         ConexionBD conn = new ConexionBD(ruta);
         Connection c = conn.conectar();
-        String check = "SELECT * FROM POSTEO WHERE ID_DOCUMENTO LIKE '%" + iddoc + "' FETCH FIRST 1 ROWS ONLY";
+        //Prueba de cortar la ruta absoluta para la busqueda del documento
+        iddoc = iddoc.substring(86, iddoc.length());
+               
+        String check = "SELECT DISTINCT * FROM POSTEO WHERE ID_DOCUMENTO LIKE '%" + iddoc + "' FETCH FIRST 1 ROWS ONLY";
         Statement st = c.createStatement();
         ResultSet rs = st.executeQuery(check);
 
@@ -204,21 +201,15 @@ public class TablaPosteo {
 
         String aux = "";
         int contador = 0;
-        boolean bandera = true;
 
         for (Object t : posteoNuevo.values()) { //Recorre el hash de terminos
 
             FilaPosteo fp = (FilaPosteo) t;
 
-            if (bandera && this.estaDocumento(fp)) {  //para checkear que el documento no este en la base de datos
-                stm.close();
-                c.commit();
-                c.close();
-                break;
-            }
-            
-            bandera=false;
-            
+//            if (this.estaIDDocumento(fp.getDocumento())) {  //Para checkear que el documento no este en la base de datos
+//                continue;
+//            }
+          
             aux += " ( '" + fp.getId_termino() + "', '" + fp.getDocumento() + "', " + fp.getFrecuencia() + ",'" + fp.getTitulo() + "'),";
 
             contador++;
@@ -227,16 +218,52 @@ public class TablaPosteo {
                 stmaux.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA,TITULO) VALUES " + aux.substring(0, aux.length() - 1));
 
                 stmaux.close();
-//                c.commit();//Fijarse que esto se puede sacar para disminuir tiempo ejecucion
-
                 aux = "";
                 contador = 0;
             }
         }
-
+        System.out.println("insertarPosteo sout"+aux);
         stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA, TITULO) VALUES " + aux.substring(0, aux.length() - 1));
         stm.close();
         c.commit();
         c.close();
     }
+    
+    public void actualizarTermino(Termino termino, int caso) throws ClassNotFoundException, SQLException
+    {
+    //Caso depende del termino
+        //1. Actualiza cant. doc. y frec. max.
+        //2. Actualiza cant. doc.
+        //3. Termino nuevo
+        
+        ConexionBD conn = new ConexionBD(ruta);
+        Connection c = conn.conectar();
+        Statement stm = c.createStatement();
+        c.setAutoCommit(false);
+        String consulta ="";
+        
+        switch (caso) {
+            case 1:
+                    consulta ="UPDATE VOCABULARIO SET FRECUENCIAMAX = "+ termino.getFrecuenciaMax() 
+                            +", CANTIDADDOCS = "+ termino.getCantDocumentos() 
+                            +" WHERE ID_TERMINO LIKE '"+ termino.getId_termino() +"'"; 
+                break;
+            case 2:
+                    consulta ="UPDATE VOCABULARIO SET CANTIDADDOCS = "+ termino.getCantDocumentos() 
+                            +" WHERE ID_TERMINO LIKE '"+ termino.getId_termino() +"'";
+                break;
+            case 3:
+                    consulta = "INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+
+                            " ('" + termino.getId_termino() + "', " + termino.getFrecuenciaMax() + ", " + termino.getCantDocumentos() + "),";
+                break;
+            default:
+                throw new AssertionError();
+                    }
+        
+        stm.executeUpdate(consulta);              
+        stm.close();
+        c.commit();
+        c.close();  
+    }
+    
 }

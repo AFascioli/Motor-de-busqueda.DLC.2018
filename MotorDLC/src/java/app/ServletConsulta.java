@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package app;
 
-import bd.TablaPosteo;
+import bd.RankeoDocumentosConsulta;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -18,27 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author dlcusr
- */
-public class ServletConsulta2 extends HttpServlet {
+public class ServletConsulta extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
      protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         try {
-            Renombrar gestor= new Renombrar();
+            RankeoDocumentosConsulta gestor= new RankeoDocumentosConsulta();
          
             HttpSession session = request.getSession();
             Map vocabulario = (Map) session.getAttribute("vocabulario");
@@ -58,8 +39,7 @@ public class ServletConsulta2 extends HttpServlet {
             
         }
         catch (ClassNotFoundException e) {
-//             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
-//            request.setAttribute("errorMsg", errorMsg);
+           request.setAttribute("errorMsg", e.getMessage());
         }
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher("/index.jsp");

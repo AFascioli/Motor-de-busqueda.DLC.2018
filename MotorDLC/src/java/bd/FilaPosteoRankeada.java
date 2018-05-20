@@ -1,15 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bd;
 
-/**
- *
- * @author dlcusr
- */
-public class FilaRankeo implements Comparable{
+public class FilaPosteoRankeada implements Comparable{
 
     private String id_termino;
     private String documento;
@@ -25,10 +16,10 @@ public class FilaRankeo implements Comparable{
         this.titulo = titulo;
     }
 
-    public FilaRankeo() {
+    public FilaPosteoRankeada() {
     }
 
-    public FilaRankeo(String id_termino, String documento, int frecuencia, double peso, String titulo) {
+    public FilaPosteoRankeada(String id_termino, String documento, int frecuencia, double peso, String titulo) {
         this.id_termino = id_termino;
         this.documento = documento;
         this.frecuencia = frecuencia;
@@ -70,7 +61,7 @@ public class FilaRankeo implements Comparable{
 
     public double calcularPeso(int cantDocsTerm, int cantDocsTotal)
     {
-        double factorStopWord=0.3;//si no entra al if, es una stop word y se le disminuira el peso a ese termino
+        double factorStopWord=0.3;//Si no entra al if, es una stop word y se le disminuira el peso a ese termino
         
         if ((cantDocsTerm/cantDocsTotal)<=0.6) {
             factorStopWord=1;
@@ -84,7 +75,7 @@ public class FilaRankeo implements Comparable{
     @Override
     public int compareTo(Object o) {
 
-        FilaRankeo fr = (FilaRankeo) o;
+        FilaPosteoRankeada fr = (FilaPosteoRankeada) o;
 
         if (this.peso > fr.getPeso()) {
             return 1;

@@ -6,11 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
@@ -33,7 +29,7 @@ and open the template in the editor.
                 Motor de b&uacute;squeda &nbsp;
             </label>
             <div class="col-md-12" style="line-height: 40px;">
-                <form method="post" action="servletconsulta2">
+                <form method="post" action="servletconsulta">
                     <div style="text-align: center">
                         <input class="form-control" type="text" style="margin-left: 20%; margin-right: 25%" placeholder="Ingrese su b&uacute;squeda" maxlength="120" id="txt_busqueda" name ="txt_busqueda" value="${busqueda}" autofocus/>
                     </div>
@@ -54,15 +50,15 @@ and open the template in the editor.
                         <table class="table table-striped">
                             <div id="colname">
                                 <tr>
-                                    <th>T&iacute;tulo</th>
-                                    <th>Nombre de documento</th>
+                                    <th>T&iacute;tulo del documento</th>
+                                    <th>Ruta del documento</th>
                                     <th>Peso</th>
                                 </tr>
                             </div>
                             <div style="display: block">
                                 <c:forEach items="${resultado}" var="documento" begin="0" end="15" >
                                     <tr>
-                                        <td><a href="${documento.nombre}" target="_blanck"><c:out value="${documento.titulo}"> </c:out></a></td>
+                                        <td><a href="${documento.nombre}" download target="_blanck"><c:out value="${documento.titulo}"> </c:out></a></td>
                                         <td><c:out value="${documento.nombre}"> </c:out> </td>
                                         <td><c:out value="${documento.peso}"> </c:out></td>
                                         </tr>
@@ -75,7 +71,7 @@ and open the template in the editor.
         </div>
 
         <footer class="footer">
-            Autores: Ponce Diego, Bargiano Florencia y Fascioli Agust&iacute;n
+            Autores: Ponce Diego, Bargiano Florencia, Luzara Ezequiel y Fascioli Agust&iacute;n
         </footer> 
 
     </body>

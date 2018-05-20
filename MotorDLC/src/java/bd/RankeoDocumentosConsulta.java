@@ -1,30 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package app;
+package bd;
 
-import bd.Documento;
-import bd.FilaRankeo;
-import bd.TablaPosteo;
-import datos.Termino;
-import datos.Vocabulario;
+import entidad.Termino;
+import entidad.Vocabulario;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author dlcusr
- */
-public class Renombrar {
+public class RankeoDocumentosConsulta {
 
-    public Renombrar() {
+    public RankeoDocumentosConsulta() {
     }
-    
     
     public List rankeo(Map vocab, String consulta) throws ClassNotFoundException {
 
@@ -39,21 +27,30 @@ public class Renombrar {
             return error;
         }
         Map hmDocs = new LinkedHashMap();
+        
+         //Buscamos la cantidad de documentos totales
+                int cantidadDocumentos=0;
+                 File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\Documentos");
+                 cantidadDocumentos = dir.list().length;
+                 
+                 dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\DocumentosAIndexar");
+                 cantidadDocumentos += dir.list().length;
+                 
 
         for (Object o : terminosConsulta) {
 
             Termino term = (Termino) o;
-            ArrayList arrayFR = tp.loadRankeo(term); //array filarankeo de cada termino
+            ArrayList arrayFR = tp.loadRankeo(term); //Array filaPosteoRankeada de cada termino
             //HM para los documentos
 
             for (Object object : arrayFR) {
 
-                FilaRankeo fr = (FilaRankeo) object;
+                FilaPosteoRankeada fr = (FilaPosteoRankeada) object;
                 Documento docAInsertar = new Documento();
-
+                
                 docAInsertar.setNombre(fr.getDocumento());
-                double valorAInsertar= Math.floor(fr.calcularPeso(arrayFR.size(), 500) * 100) / 100;
-                docAInsertar.setPeso(valorAInsertar);//500 es la cantidad total de documentos
+                double valorAInsertar= Math.floor(fr.calcularPeso(arrayFR.size(), cantidadDocumentos) * 100) / 100;
+                docAInsertar.setPeso(valorAInsertar);
                 docAInsertar.setTitulo(fr.getTitulo());
 
                 if (hmDocs.containsKey(docAInsertar.getNombre())) {//Si el documento ya esta en el HM, lo saca y le suma el peso que se calculo antes
@@ -64,7 +61,7 @@ public class Renombrar {
 
                     hmDocs.put(docAInsertar.getNombre(), docAInsertar);
                 } else {
-                    hmDocs.put(docAInsertar.getNombre(), docAInsertar);//agregas el documentos al HM
+                    hmDocs.put(docAInsertar.getNombre(), docAInsertar);//Agregamos el documentos al HM
                 }
             }
         }
