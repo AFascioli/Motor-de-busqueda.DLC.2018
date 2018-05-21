@@ -23,12 +23,13 @@ public class ServletIndexar extends HttpServlet {
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
         String destino="/index.html";
+        
         try {
 
             File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\DocumentosAIndexar");
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-            //Armamos el vector filtrando los archivos que no tengan extension .txt 
             
+            //Armamos el vector filtrando los archivos que no tengan extension .txt 
             LinkedList <File>listaArchivos = new LinkedList<>();
             //Obtenemos el hashmap de los documentos ya indexados
             Map mapaDoc = tp.documentosIndexados();
@@ -44,6 +45,8 @@ public class ServletIndexar extends HttpServlet {
             }
             else
             {
+                destino ="/documentosIndexados.jsp";
+                
             File[] archivotest = new File[listaArchivos.size()]; 
             
             for (int i = 0; i < archivotest.length; i++) {
@@ -55,6 +58,8 @@ public class ServletIndexar extends HttpServlet {
             
             //Obtenemos el vocabulario de la sesion
             HttpSession session = request.getSession();
+            //Agregamos atributo para mostrar los archivos indexados
+            session.setAttribute("listaArchivos",archivotest);
             
             Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
             session.setAttribute("vocabulario",vocabulario);

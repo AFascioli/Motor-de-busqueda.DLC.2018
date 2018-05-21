@@ -36,7 +36,7 @@
                     <input class="btn btn-md btn-primary" style="margin-left: 20%;" type="submit" value="Buscar" name="buscar" />
                 </form>
                 <form method="post" action="servletindexar">  
-                    <input class="btn btn-md btn-primary" style="margin-right: 20%;" type="submit" value="Indexar nuevos archivos" name="index" />
+                    <input class="btn btn-md btn-primary" style="margin-right: 20%;" type="submit" value="Indexar nuevos archivos" name="index"/>
                 </form>
             </div>
         </div>
