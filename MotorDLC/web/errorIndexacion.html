@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html>
+    <head>
+        <title>Buscador</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="css/estilo.css">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+
+        <header class="header">
+            Dise&nacute;o de Lenguajes de Consulta, 2018
+        </header>
+
+        <div id="cuerpo" style="text-align: center" >
+            <label id="campobusqueda" style="font-size: 30px; ">
+                Motor de b&uacute;squeda &nbsp;
+            </label>
+            <div class="col-md-12" style="line-height: 40px;">
+            
+                <div class="alert alert-danger">
+                    <strong>Atenci&oacute;n</strong>, los documentos ya se encuentran indexados!</div>
+            <form method="post" action="servletmotor">  
+                    <input class="btn btn-md btn-primary" style="margin-right: 20%;" type="submit" value="Volver al buscador" name="index" />
+            </form>
+        </div>
+    </div>
+        
+    <footer class="footer">
+        Autores: Ponce Diego, Bargiano Florencia, Luzara Ezequiel y Fascioli Agust&iacute;n
+    </footer> 
+
+</body>
+</html>

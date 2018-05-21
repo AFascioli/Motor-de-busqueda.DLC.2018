@@ -12,14 +12,7 @@ import java.util.logging.Logger;
 public class Indexar {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, IOException {
-
-//        File dir= new File( "C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\DocumentosAIndexar");
-//        File[] archivos = dir.listFiles();
-//        ArchivoToHM arcToHM = new ArchivoToHM(archivos);
-//        Map aux[] = arcToHM.fileToHM2();
-//        System.out.println("Tamaño TerminoHM: " + aux[0].size());
-//        System.out.println("Tamaño PosteoHM: " + aux[1].size());
-        
+      
         File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\Documentos");    
  
         File[] archivos = dir.listFiles();
@@ -38,9 +31,7 @@ public class Indexar {
          tp.deleteTable("POSTEO");
   
             tp.insertarTerminoHM(aux[0]);
-            aux[0]=null;
             tp.insertarPosteoHM(aux[1]);
-            aux[1]=null;
             
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());

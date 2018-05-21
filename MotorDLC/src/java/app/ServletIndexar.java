@@ -5,7 +5,6 @@ import bd.TablaPosteo;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,45 +22,45 @@ public class ServletIndexar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
+        String destino="/index.html";
         try {
 
             File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\DocumentosAIndexar");
-            
+            TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
             //Armamos el vector filtrando los archivos que no tengan extension .txt 
             
-            LinkedList listaArchivos;
-            listaArchivos = new LinkedList();
+            LinkedList <File>listaArchivos = new LinkedList<>();
+            //Obtenemos el hashmap de los documentos ya indexados
+            Map mapaDoc = tp.documentosIndexados();
             
             for (File archivo : dir.listFiles()) {
-                if(archivo.getName().endsWith(".txt")){
+                if(archivo.getName().endsWith(".txt") && !mapaDoc.containsKey(archivo.getName()) ){
                     listaArchivos.add(archivo);
-                    
                 }
             }
-             
-//          File[] archivos = Arrays.copyOf(listaArchivos.toArray(), listaArchivos.size() , File[].class );
-         
-            File[] archivos = dir.listFiles();
-            ArchivoToHM arcToHM = new ArchivoToHM(archivos);
+
+            if (listaArchivos.isEmpty()) {
+                destino="/errorIndexacion.html";
+            }
+            else
+            {
+            File[] archivotest = new File[listaArchivos.size()]; 
+            
+            for (int i = 0; i < archivotest.length; i++) {
+                archivotest[i]=listaArchivos.get(i);
+            }
+            
+            ArchivoToHM arcToHM = new ArchivoToHM(archivotest);
             Map aux[] = arcToHM.fileToHM2();
-
-            archivos = null;
-
-            TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
+            
             //Obtenemos el vocabulario de la sesion
             HttpSession session = request.getSession();
-            Map vocabularioSesion = (Map)session.getAttribute("vocabulario");
-            
-            System.out.println("SERVLET INDEXAR//////////////////////////");
-            System.out.println("Vocabulario de la session: "+ vocabularioSesion.isEmpty());
-            System.out.println("Voc. nuevo: "+ aux[0].toString().length());
             
             Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
             session.setAttribute("vocabulario",vocabulario);
-            aux[0] = null;
             
             tp.actualizarPosteo(aux[1]);
-            aux[1] = null;
+            }
             
         } catch (ClassNotFoundException | SQLException ex ) {
                 request.setAttribute("indexado",false);
@@ -70,7 +69,7 @@ public class ServletIndexar extends HttpServlet {
         }
 
         ServletContext app = this.getServletContext();
-        RequestDispatcher disp = app.getRequestDispatcher("/index.html");
+        RequestDispatcher disp = app.getRequestDispatcher(destino);
         disp.forward(request, response);
     }
 

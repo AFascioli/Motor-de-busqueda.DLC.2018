@@ -36,12 +36,8 @@ public class ArchivoToHM {
         Map terminoHM = new LinkedHashMap();
         Map posteoHM = new LinkedHashMap();
 
-        System.out.println("Largo de file:"+ file.length);
-        
         String titulo = "";
-
         String nombreArc="";
-
         int contadorDoc =0;
         
         try {
@@ -125,9 +121,7 @@ public class ArchivoToHM {
             Map resp[] = new LinkedHashMap[2];
             resp[0] = terminoHM;
             resp[1] = posteoHM;
-            terminoHM = null;
-            posteoHM = null;
-            System.out.println("La cantidad de documentos indexados es: "+contadorDoc);
+
             return resp;
         }
     }

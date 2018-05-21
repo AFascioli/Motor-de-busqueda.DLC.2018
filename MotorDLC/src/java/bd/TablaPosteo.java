@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TablaPosteo {
 
@@ -201,18 +205,11 @@ public class TablaPosteo {
 
         String aux = "";
         int contador = 0;
-
-        //Prueba, despues borrar
-        System.out.println("Prueba si HMposteo isEmpty:" + posteoNuevo.isEmpty());
         
         for (Object t : posteoNuevo.values()) { //Recorre el hash de terminos
 
             FilaPosteo fp = (FilaPosteo) t;
 
-            if (this.estaIDDocumento(fp.getDocumento())) {  //Para checkear que el documento no este en la base de datos
-                continue;
-            }
-          
             aux += " ( '" + fp.getId_termino() + "', '" + fp.getDocumento() + "', " + fp.getFrecuencia() + ",'" + fp.getTitulo() + "'),";
 
             contador++;
@@ -225,7 +222,6 @@ public class TablaPosteo {
                 contador = 0;
             }
         }
-        System.out.println("INSERT de posteo, aux: "+aux);
         stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA, TITULO) VALUES " + aux.substring(0, aux.length() - 1));
         stm.close();
         c.commit();
@@ -267,6 +263,46 @@ public class TablaPosteo {
         stm.close();
         c.commit();
         c.close();  
+    }
+    
+    public Map documentosIndexados() throws SQLException, ClassNotFoundException
+    {
+        Map mapaDoc = new LinkedHashMap();
+        int indexCortar=65;
+        try {
+            ConexionBD conn = new ConexionBD(ruta);
+            Connection c = conn.conectar();
+            
+            String documentos = "SELECT DISTINCT ID_DOCUMENTO FROM POSTEO FETCH FIRST 600 ROWS ONLY";
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(documentos);
+        
+            while (rs.next()) {
+                String pathDoc = rs.getString("ID_DOCUMENTO");
+                
+                if (pathDoc.substring(54, 65).compareTo("DocumentosA")==0) {
+                    indexCortar=73;
+                }
+                else
+                {
+                    indexCortar=65;
+                }
+
+                String nombreDoc = pathDoc.substring(indexCortar, pathDoc.length());
+                mapaDoc.put(nombreDoc,pathDoc);
+            }
+            st.close();
+            c.commit();
+            c.close();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TablaPosteo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+        
+            return mapaDoc;
+        }
     }
     
 }
