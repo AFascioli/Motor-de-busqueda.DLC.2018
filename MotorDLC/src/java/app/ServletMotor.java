@@ -23,8 +23,9 @@ public class ServletMotor extends HttpServlet {
             HttpSession session= request.getSession();
             
             session.setAttribute("vocabulario",tp.loadVocabulario());
-            
             dest = "/index.html";
+            
+            System.out.println("Vocabulario de la session: "+ session.getAttribute("vocabulario").toString().length());
         }
         catch (Exception e) {                
             request.setAttribute("errorMsg", e.getMessage());

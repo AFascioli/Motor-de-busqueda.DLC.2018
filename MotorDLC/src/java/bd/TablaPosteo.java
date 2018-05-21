@@ -202,13 +202,16 @@ public class TablaPosteo {
         String aux = "";
         int contador = 0;
 
+        //Prueba, despues borrar
+        System.out.println("Prueba si HMposteo isEmpty:" + posteoNuevo.isEmpty());
+        
         for (Object t : posteoNuevo.values()) { //Recorre el hash de terminos
 
             FilaPosteo fp = (FilaPosteo) t;
 
-//            if (this.estaIDDocumento(fp.getDocumento())) {  //Para checkear que el documento no este en la base de datos
-//                continue;
-//            }
+            if (this.estaIDDocumento(fp.getDocumento())) {  //Para checkear que el documento no este en la base de datos
+                continue;
+            }
           
             aux += " ( '" + fp.getId_termino() + "', '" + fp.getDocumento() + "', " + fp.getFrecuencia() + ",'" + fp.getTitulo() + "'),";
 
@@ -222,7 +225,7 @@ public class TablaPosteo {
                 contador = 0;
             }
         }
-        System.out.println("insertarPosteo sout"+aux);
+        System.out.println("INSERT de posteo, aux: "+aux);
         stm.executeUpdate("INSERT INTO POSTEO (ID_TERMINO, ID_DOCUMENTO, FRECUENCIA, TITULO) VALUES " + aux.substring(0, aux.length() - 1));
         stm.close();
         c.commit();
@@ -254,7 +257,7 @@ public class TablaPosteo {
                 break;
             case 3:
                     consulta = "INSERT INTO VOCABULARIO (ID_TERMINO, FRECUENCIAMAX, CANTIDADDOCS) VALUES "+
-                            " ('" + termino.getId_termino() + "', " + termino.getFrecuenciaMax() + ", " + termino.getCantDocumentos() + "),";
+                            " ('" + termino.getId_termino() + "', " + termino.getFrecuenciaMax() + ", " + termino.getCantDocumentos() + ")";
                 break;
             default:
                 throw new AssertionError();

@@ -25,36 +25,41 @@ public class ServletIndexar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
 
-            File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\DocumentosAIndexar");
+            File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\DocumentosAIndexar");
             
             //Armamos el vector filtrando los archivos que no tengan extension .txt 
+            
             LinkedList listaArchivos;
             listaArchivos = new LinkedList();
             
-//            for (File archivo : dir.listFiles()) {
-//                if(archivo.getName().endsWith(".txt")){
-//                    listaArchivos.add(archivo);
-//                    
-//                }
-//            }
-//             
-//            File[] archivos = Arrays.copyOf(listaArchivos.toArray(), listaArchivos.size() , File[].class );
-//            
+            for (File archivo : dir.listFiles()) {
+                if(archivo.getName().endsWith(".txt")){
+                    listaArchivos.add(archivo);
+                    
+                }
+            }
+             
+//          File[] archivos = Arrays.copyOf(listaArchivos.toArray(), listaArchivos.size() , File[].class );
+         
             File[] archivos = dir.listFiles();
-
             ArchivoToHM arcToHM = new ArchivoToHM(archivos);
             Map aux[] = arcToHM.fileToHM2();
 
             archivos = null;
 
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
-//            System.out.println("Test de estaIDDocumento: "+tp.estaIDDocumento("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\Documentos\\00weees110.txt"));
-                    
+            //Obtenemos el vocabulario de la sesion
             HttpSession session = request.getSession();
-            Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
+            Map vocabularioSesion = (Map)session.getAttribute("vocabulario");
             
+            System.out.println("SERVLET INDEXAR//////////////////////////");
+            System.out.println("Vocabulario de la session: "+ vocabularioSesion.isEmpty());
+            System.out.println("Voc. nuevo: "+ aux[0].toString().length());
+            
+            Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
             session.setAttribute("vocabulario",vocabulario);
             aux[0] = null;
+            
             tp.actualizarPosteo(aux[1]);
             aux[1] = null;
             

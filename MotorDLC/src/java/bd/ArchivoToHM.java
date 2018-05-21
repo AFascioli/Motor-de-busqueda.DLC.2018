@@ -128,7 +128,6 @@ public class ArchivoToHM {
             terminoHM = null;
             posteoHM = null;
             System.out.println("La cantidad de documentos indexados es: "+contadorDoc);
-            
             return resp;
         }
     }
