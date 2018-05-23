@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>servletmotor</servlet-name>
+        <servlet-name>ServletMotor</servlet-name>
         <servlet-class>app.ServletMotor</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>servletindexar</servlet-name>
-        <servlet-class>app.ServletIndexar</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>servletconsulta</servlet-name>
+        <servlet-name>ServletConsulta</servlet-name>
         <servlet-class>app.ServletConsulta</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletIndexar</servlet-name>
+        <servlet-class>app.ServletIndexar</servlet-class>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>servletmotor</servlet-name>
+        <servlet-name>ServletMotor</servlet-name>
         <url-pattern>/servletmotor</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>servletindexar</servlet-name>
-        <url-pattern>/servletindexar</url-pattern>
+        <servlet-name>ServletConsulta</servlet-name>
+        <url-pattern>/servletconsulta</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>servletconsulta</servlet-name>
-        <url-pattern>/servletconsulta</url-pattern>
+        <servlet-name>ServletIndexar</servlet-name>
+        <url-pattern>/servletindexar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

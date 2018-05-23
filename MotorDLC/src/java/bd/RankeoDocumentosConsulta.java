@@ -30,10 +30,10 @@ public class RankeoDocumentosConsulta {
         
          //Buscamos la cantidad de documentos totales
                 int cantidadDocumentos=0;
-                 File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\Documentos");
+                 File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\Documentos");
                  cantidadDocumentos = dir.list().length;
                  
-                 dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\MotorWin.DLC\\DocumentosAIndexar");
+                 dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\DocumentosAIndexar");
                  cantidadDocumentos += dir.list().length;
                  
 

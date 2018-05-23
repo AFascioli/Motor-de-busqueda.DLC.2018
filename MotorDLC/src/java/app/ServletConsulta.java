@@ -42,7 +42,7 @@ public class ServletConsulta extends HttpServlet {
            request.setAttribute("errorMsg", e.getMessage());
         }
         ServletContext app = this.getServletContext();
-        RequestDispatcher disp = app.getRequestDispatcher("/index.jsp");
+        RequestDispatcher disp = app.getRequestDispatcher("/buscador.jsp");
         disp.forward(request, response);
     }
 

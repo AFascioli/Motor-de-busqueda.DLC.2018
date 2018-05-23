@@ -4,7 +4,6 @@ import bd.ArchivoToHM;
 import bd.TablaPosteo;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,7 +21,7 @@ public class ServletIndexar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
-        String destino="/index.html";
+        String destino="";
         
         try {
 
@@ -31,22 +30,20 @@ public class ServletIndexar extends HttpServlet {
             
             //Armamos el vector filtrando los archivos que no tengan extension .txt 
             LinkedList <File>listaArchivos = new LinkedList<>();
+            
             //Obtenemos el hashmap de los documentos ya indexados
             Map mapaDoc = tp.documentosIndexados();
-            
             for (File archivo : dir.listFiles()) {
                 if(archivo.getName().endsWith(".txt") && !mapaDoc.containsKey(archivo.getName()) ){
                     listaArchivos.add(archivo);
                 }
             }
-
+            
             if (listaArchivos.isEmpty()) {
                 destino="/errorIndexacion.html";
             }
             else
             {
-                destino ="/documentosIndexados.jsp";
-                
             File[] archivotest = new File[listaArchivos.size()]; 
             
             for (int i = 0; i < archivotest.length; i++) {
@@ -63,11 +60,12 @@ public class ServletIndexar extends HttpServlet {
             
             Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
             session.setAttribute("vocabulario",vocabulario);
-            
+
             tp.actualizarPosteo(aux[1]);
+            destino ="/documentosIndexados.jsp";
             }
             
-        } catch (ClassNotFoundException | SQLException ex ) {
+        } catch (Exception ex ) {
                 request.setAttribute("indexado",false);
                 Logger.getLogger(Indexar.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("errorMsg", ex.getMessage());

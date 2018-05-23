@@ -21,6 +21,14 @@ public class ArchivoToHM {
         this.file = file;
     }
 
+    public File[] getFile() {
+        return file;
+    }
+
+    public void setFile(File[] file) {
+        this.file = file;
+    }
+
     public String removeAcentos(String str) {
         //Reemplaza las vocales con acentos y dieresis por las vocales sin estos.
         String acentos = "áÁäÄéÉëËíÍïÏóÓöÖúÚüÜàèìòùÀÈÌÒÙ";
@@ -37,29 +45,41 @@ public class ArchivoToHM {
         Map posteoHM = new LinkedHashMap();
 
         String titulo = "";
-        String nombreArc="";
-        int contadorDoc =0;
-        
+        String nombreArc = "";
+        int contadorDoc = 0;
+
         try {
-              for (int i = 0; i < file.length; i++) {
-                File fa = file[i];
-                titulo="";
-                
+            for (File fa : file) {
+                System.out.println("ENTRO AL FOR");
+                titulo = "";
                 contadorDoc++;
-                
-                nombreArc=fa.getAbsolutePath() ;
+
+                nombreArc = fa.getAbsolutePath();
                 char comilla = '"';
-               
+
                 //Lectura del archivo
-                List<String> fileList = Files.lines(Paths.get(fa.getPath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
+                List<String> fileList = Files.lines(Paths.get(fa.getAbsolutePath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
+
                 //Lista para crear el titulo
-                List<String> listaTitulo = fileList.subList(0, 3);
-                //Acumulacion y asignacion del titulo del archivo
-                if (listaTitulo.get(0).isEmpty()) {
-                    titulo=listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");
+                if (fileList.size() < 3) 
+                {
+                    List<String> listaTitulo = fileList.subList(0, fileList.size());
                     
-                } else {
-                    titulo=listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","")+" "+listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]","");                  
+                    for (String stringA : listaTitulo) {
+                        titulo += stringA.replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
+                    }
+                    
+                } 
+                else 
+                {
+                    List<String> listaTitulo = fileList.subList(0, 3);
+                    //Acumulacion y asignacion del titulo del archivo
+                    if (listaTitulo.get(0).isEmpty()) {
+                    titulo = listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "") + " " + listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
+
+                    } else {
+                    titulo = listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "") + " " + listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
+                    }
                 }
 
                 //Inicializacion
@@ -81,7 +101,7 @@ public class ArchivoToHM {
                         {
                             Termino termino = new Termino(palabra, 1, 1);
                             terminoHM.put(palabra, termino);
-                            FilaPosteo fp = new FilaPosteo(palabra,nombreArc, 1, titulo); //Cambio de getName a getPath
+                            FilaPosteo fp = new FilaPosteo(palabra, nombreArc, 1, titulo); //Cambio de getName a getPath
                             posteoHM.put(palabra + nombreArc, fp);
 
                         } else //Se encuentra una palabra ya existente en el vocabulario.
@@ -119,6 +139,7 @@ public class ArchivoToHM {
             Logger.getLogger(ex.getLocalizedMessage());
         } finally {
             Map resp[] = new LinkedHashMap[2];
+
             resp[0] = terminoHM;
             resp[1] = posteoHM;
 
@@ -127,11 +148,11 @@ public class ArchivoToHM {
     }
 
     public Map actualizarTerminoHM(Map nuevo, Map vocab) throws ClassNotFoundException, SQLException {
-        
+
         for (Object term : nuevo.values()) {
             Termino termino = (Termino) term;
             int caso;
-            
+
             if (vocab.get(termino.getId_termino()) != null) {//El termino de nuevo documento esta en el vocabulario
 
                 Termino terminoVoc = (Termino) vocab.remove(termino.getId_termino());
@@ -141,24 +162,20 @@ public class ArchivoToHM {
                 if (terminoVoc.getFrecuenciaMax() > termino.getFrecuenciaMax()) {
                     termino.setFrecuenciaMax(terminoVoc.getFrecuenciaMax());
                     //Caso 1 Actualiza cant. doc. y frec. max.
-                    caso=1;
-                }
-                else
-                {
+                    caso = 1;
+                } else {
                     //Caso 2 Actualiza cant. doc.
-                    caso=2;
+                    caso = 2;
                 }
+            } else {
+                //Caso 3 Termino nuevo
+                caso = 3;
             }
-            else
-            {
-            //Caso 3 Termino nuevo
-                caso=3;
-            }
-            
+
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
             //Actualizacion de la base de datos con el termino
             tp.actualizarTermino(termino, caso);
-            
+
             vocab.put(termino.getId_termino(), termino);
             termino = null;
 

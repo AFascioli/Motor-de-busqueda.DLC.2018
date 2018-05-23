@@ -2,6 +2,7 @@ package app;
 
 import bd.TablaPosteo;
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -23,12 +24,14 @@ public class ServletMotor extends HttpServlet {
             HttpSession session= request.getSession();
             
             session.setAttribute("vocabulario",tp.loadVocabulario());
-            dest = "/index.html";
-            
            
+            Map vocaux = (Map)session.getAttribute("vocabulario");
+            System.out.println("Map vocabulario en servlet motor, isEmpty:" + vocaux.isEmpty());
+            
+            dest = "/buscador.html";
         }
         catch (Exception e) {                
-            request.setAttribute("errorMsg", e.getMessage());
+            System.out.println("Error, servletmotor:" + e.getMessage());
         }
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher(dest);
