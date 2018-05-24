@@ -21,11 +21,13 @@ public class ServletMotor extends HttpServlet {
             
             TablaPosteo tp = new TablaPosteo("//localhost:1527/MotorDLC");
             
-            HttpSession session= request.getSession();
+            this.getServletConfig().getServletContext().setAttribute("vocabulario",tp.loadVocabulario());
             
-            session.setAttribute("vocabulario",tp.loadVocabulario());
-           
-            Map vocaux = (Map)session.getAttribute("vocabulario");
+            //session.setAttribute("vocabulario",tp.loadVocabulario());
+            //HttpSession session= request.getSession();
+            //Map vocaux = (Map)session.getAttribute("vocabulario");
+            
+            Map vocaux = (Map)this.getServletConfig().getServletContext().getAttribute("vocabulario");
             System.out.println("Map vocabulario en servlet motor, isEmpty:" + vocaux.isEmpty());
             
             dest = "/buscador.html";

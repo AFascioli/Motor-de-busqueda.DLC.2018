@@ -22,7 +22,8 @@ public class ServletConsulta extends HttpServlet {
             RankeoDocumentosConsulta gestor= new RankeoDocumentosConsulta();
          
             HttpSession session = request.getSession();
-            Map vocabulario = (Map) session.getAttribute("vocabulario");
+            //Implementado con context
+            Map vocabulario = (Map) this.getServletConfig().getServletContext().getAttribute("vocabulario");
             
             String consulta=request.getParameter("txt_busqueda");
             

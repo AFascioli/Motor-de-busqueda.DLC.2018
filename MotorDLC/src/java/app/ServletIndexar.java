@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class ServletIndexar extends HttpServlet {
 
@@ -22,7 +21,6 @@ public class ServletIndexar extends HttpServlet {
             throws ServletException, IOException  {
         response.setContentType("text/html;charset=UTF-8");
         String destino="";
-        
         try {
 
             File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\DocumentosAIndexar");
@@ -53,13 +51,19 @@ public class ServletIndexar extends HttpServlet {
             ArchivoToHM arcToHM = new ArchivoToHM(archivotest);
             Map aux[] = arcToHM.fileToHM2();
             
-            //Obtenemos el vocabulario de la sesion
-            HttpSession session = request.getSession();
-            //Agregamos atributo para mostrar los archivos indexados
-            session.setAttribute("listaArchivos",archivotest);
+            //Implementacion con context
+            this.getServletConfig().getServletContext().setAttribute("listaArchivos",archivotest);
             
-            Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
-            session.setAttribute("vocabulario",vocabulario);
+            Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)this.getServletConfig().getServletContext().getAttribute("vocabulario"));
+            this.getServletConfig().getServletContext().setAttribute("vocabulario",vocabulario);
+
+            //Implementacion con la session
+            //Obtenemos el vocabulario de la sesion
+            //HttpSession session = request.getSession();
+            //Agregamos atributo para mostrar los archivos indexados
+//            session.setAttribute("listaArchivos",archivotest);
+//            Map vocabulario = (Map) arcToHM.actualizarTerminoHM(aux[0], (Map)session.getAttribute("vocabulario"));
+//            session.setAttribute("vocabulario",vocabulario);
 
             tp.actualizarPosteo(aux[1]);
             destino ="/documentosIndexados.jsp";

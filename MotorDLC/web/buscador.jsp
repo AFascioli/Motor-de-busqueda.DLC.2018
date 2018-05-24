@@ -62,6 +62,7 @@
                                         <td><c:out value="${documento.nombre}"> </c:out> </td>
                                         <td><c:out value="${documento.peso}"> </c:out></td>
                                         </tr>
+                                        
                                 </c:forEach>
                             </div>
                         </table>

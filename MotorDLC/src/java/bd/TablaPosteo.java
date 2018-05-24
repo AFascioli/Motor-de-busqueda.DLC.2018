@@ -1,6 +1,7 @@
 package bd;
 
 import entidad.Termino;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -269,11 +270,17 @@ public class TablaPosteo {
     {
         Map mapaDoc = new LinkedHashMap();
         int indexCortar=65;
+        int cantidadDocumentos=0;
+        //Calculamos la cantidad de documentos indexados para acelerar la consulta SQL.
+         File dir = new File("C:\\Users\\Usuario\\Google Drive\\Facultad\\Quinto año\\DLC\\DocumentosAIndexar");
+         
+         cantidadDocumentos = 593 + dir.list().length;
+         
         try {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();
             
-            String documentos = "SELECT DISTINCT ID_DOCUMENTO FROM POSTEO FETCH FIRST 600 ROWS ONLY";
+            String documentos = "SELECT DISTINCT ID_DOCUMENTO FROM POSTEO FETCH FIRST "+ cantidadDocumentos +" ROWS ONLY";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(documentos);
         
