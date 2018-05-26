@@ -1,7 +1,11 @@
 package bd;
 
 import entidad.Termino;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,10 +51,12 @@ public class ArchivoToHM {
         String titulo = "";
         String nombreArc = "";
         int contadorDoc = 0;
-
+        int cantidadPorDocumentos =0;
+        
         try {
             for (File fa : file) {
-                System.out.println("ENTRO AL FOR");
+                cantidadPorDocumentos = cantidadTerminosPorDocumento(fa);
+                
                 titulo = "";
                 contadorDoc++;
 
@@ -61,24 +67,21 @@ public class ArchivoToHM {
                 List<String> fileList = Files.lines(Paths.get(fa.getAbsolutePath()), Charset.forName("ISO-8859-1")).collect(Collectors.toList());
 
                 //Lista para crear el titulo
-                if (fileList.size() < 3) 
-                {
+                if (fileList.size() < 3) {
                     List<String> listaTitulo = fileList.subList(0, fileList.size());
-                    
+
                     for (String stringA : listaTitulo) {
                         titulo += stringA.replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
                     }
-                    
-                } 
-                else 
-                {
+
+                } else {
                     List<String> listaTitulo = fileList.subList(0, 3);
                     //Acumulacion y asignacion del titulo del archivo
                     if (listaTitulo.get(0).isEmpty()) {
-                    titulo = listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "") + " " + listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
+                        titulo = listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "") + " " + listaTitulo.get(2).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
 
                     } else {
-                    titulo = listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "") + " " + listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
+                        titulo = listaTitulo.get(0).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "") + " " + listaTitulo.get(1).replaceAll("[:\\]\\[,\\[.\\#Ø$*'ºª@&\\\\|%°<>~©ª¬'±+«»!¡_?¿;=^÷\\\\{\\\\}’`´¨]", "");
                     }
                 }
 

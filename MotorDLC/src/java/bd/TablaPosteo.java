@@ -280,7 +280,7 @@ public class TablaPosteo {
             ConexionBD conn = new ConexionBD(ruta);
             Connection c = conn.conectar();
             
-            String documentos = "SELECT DISTINCT ID_DOCUMENTO FROM POSTEO FETCH FIRST "+ cantidadDocumentos +" ROWS ONLY";
+            String documentos = "SELECT ID_DOCUMENTO FROM POSTEO GROUP BY ID_DOCUMENTO FETCH FIRST "+ cantidadDocumentos +" ROWS ONLY";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(documentos);
         
@@ -307,7 +307,6 @@ public class TablaPosteo {
         }
         finally
         {
-        
             return mapaDoc;
         }
     }

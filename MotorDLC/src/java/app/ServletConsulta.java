@@ -21,7 +21,7 @@ public class ServletConsulta extends HttpServlet {
         try {
             RankeoDocumentosConsulta gestor= new RankeoDocumentosConsulta();
          
-            HttpSession session = request.getSession();
+            //HttpSession session = request.getSession();
             //Implementado con context
             Map vocabulario = (Map) this.getServletConfig().getServletContext().getAttribute("vocabulario");
             
